@@ -6,15 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.strydhr.thepasar.Model.StoreDocument
 import com.strydhr.thepasar.R
 
-class StoreAdapter (context: Context, val storeList: List<StoreDocument>, val itemClick:(StoreDocument) ->Unit): RecyclerView.Adapter<StoreAdapter.ViewHolder>(){
+class StoreAdapter(
+    context: Context,
+    var storeList: List<StoreDocument>,
+    val itemClick: (StoreDocument) -> Unit
+): RecyclerView.Adapter<StoreAdapter.ViewHolder>(){
     private val context:Context
 
-    inner class  ViewHolder(itemView: View,val itemClick: (StoreDocument) -> Unit):RecyclerView.ViewHolder(itemView){
+    inner class  ViewHolder(itemView: View, val itemClick: (StoreDocument) -> Unit):RecyclerView.ViewHolder(
+        itemView
+    ){
         private val storeImage: ImageView
         private val storeName: TextView
         private val storeType: TextView
@@ -37,8 +43,12 @@ class StoreAdapter (context: Context, val storeList: List<StoreDocument>, val it
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreAdapter.ViewHolder {
-        val view: View =  LayoutInflater.from(parent.context).inflate(R.layout.row_store_item, parent, false)
-        return ViewHolder(view,itemClick)
+        val view: View =  LayoutInflater.from(parent.context).inflate(
+            R.layout.row_store_item,
+            parent,
+            false
+        )
+        return ViewHolder(view, itemClick)
     }
 
     override fun getItemCount(): Int {
@@ -54,4 +64,11 @@ class StoreAdapter (context: Context, val storeList: List<StoreDocument>, val it
         this.context = context
     }
 
+    fun updateAdapter( list: ArrayList<StoreDocument>) {
+        storeList = list
+        // update adapter element like NAME, EMAIL e.t.c. here
+
+        // then in order to refresh the views notify the RecyclerView
+        notifyDataSetChanged()
+    }
 }

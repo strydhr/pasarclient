@@ -3,4 +3,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string-array name="radius_type">
+        <item> </item>
+        <item>5 Km</item>
+        <item>15 km</item>
+        <item>30 Km</item>
+    </string-array>
 </resources>

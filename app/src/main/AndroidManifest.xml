@@ -33,6 +33,11 @@
             </intent-filter>
         </activity>
 
+<!--        Popups-->
+        <activity
+            android:name=".Controller.Fragments.View.PopupUpdateRadius"
+            android:theme="@style/AppTheme.CustomTheme" />
+
         <activity android:name=".MainActivity">
         </activity>
     </application>

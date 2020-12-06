@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp"
+    android:background="#CAD5D6">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_centerInParent="true">
+
+
+
+
+        <TextView
+            android:id="@+id/radiuspopup_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Change Store Search distance"
+            android:textSize="20dp"/>
+
+
+
+        <RelativeLayout
+            android:id="@+id/radius_maincontainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/radiuspopup_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp">
+
+            <RelativeLayout
+                android:id="@+id/radius_subcontainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="1dp"
+                android:background="@drawable/separator_btm_grey">
+
+                <Spinner
+                    android:id="@+id/radius_spinner"
+                    android:layout_width="220dp"
+                    android:layout_height="43dp"
+                    android:layout_marginLeft="15dp"
+                    android:textColor="#68727A" />
+                <TextView
+                    android:id="@+id/radius_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Distance"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:textSize="18dp"
+                    android:textColor="#68727A"/>
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/radius_saveBtn"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/radius_maincontainer"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_button"
+            android:onClick="confirmBtnClicked"
+            android:text="Confirm"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+
+    </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/radius_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
+    <ImageView
+        android:id="@+id/newpayment_receiptImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"/>
+
+</RelativeLayout>
