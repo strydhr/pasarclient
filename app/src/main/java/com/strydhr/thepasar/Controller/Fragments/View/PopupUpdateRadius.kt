@@ -77,6 +77,7 @@ class PopupUpdateRadius: AppCompatActivity() {
     }
 
     fun enableProgressBar(enable: Boolean){
+        println("Pinochio")
         if (enable){
 
             radius_progressbar.visibility = View.VISIBLE

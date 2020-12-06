@@ -15,6 +15,7 @@ import com.google.firebase.firestore.GeoPoint
 import com.google.gson.Gson
 import com.strydhr.thepasar.Adapters.StoreAdapter
 import com.strydhr.thepasar.Controller.Fragments.View.PopupUpdateRadius
+import com.strydhr.thepasar.Controller.Fragments.View.StoreProduct
 import com.strydhr.thepasar.Model.StoreDocument
 
 import com.strydhr.thepasar.R
@@ -43,23 +44,25 @@ class HomeMain : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val geopoint = GeoPoint(userGlobal?.l!![0], userGlobal?.l!![1])
-        StoreServices.geoSearchStore(geopoint, 10.0){ storelist,query ->
 
+        val geopoint = GeoPoint(userGlobal?.l!![0], userGlobal?.l!![1])
+        StoreServices.geoSearchStore(geopoint, 30.0){ storelist,query ->
             storeList = storelist
             query.removeAllListeners()
             adapter = StoreAdapter(context!!.applicationContext,storeList){
-                var objStr = Gson().toJson(it)
 
-//                val bundle = Bundle()
-//                bundle.putString("property", objStr)
-//                val fragInfo = viewSelectedProperty()
-//                fragInfo.arguments = bundle
-//
-//
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .replace(R.id.fragment_container, fragInfo).addToBackStack(null)
-//                    .commit()
+                var objStr = Gson().toJson(it)
+                println(objStr)
+
+                val bundle = Bundle()
+                bundle.putString("store", objStr)
+                val fragInfo = StoreProduct()
+                fragInfo.arguments = bundle
+
+
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragInfo).addToBackStack(null)
+                    .commit()
 
             }
             viewstore_recyclerview.adapter = adapter

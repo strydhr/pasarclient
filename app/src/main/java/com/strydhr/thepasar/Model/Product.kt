@@ -15,7 +15,7 @@ data class Product(
     var profileImage:String? = null,
     @field:JvmField var availability:Boolean? = null,
     @field:JvmField var hasCounter:Boolean? = null,
-    var colorClass:String? = null
+    var colorClass:Int? = null
 
 
 )

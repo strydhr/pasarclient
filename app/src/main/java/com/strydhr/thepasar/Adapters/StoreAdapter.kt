@@ -13,9 +13,7 @@ import com.strydhr.thepasar.R
 
 class StoreAdapter(
     context: Context,
-    var storeList: List<StoreDocument>,
-    val itemClick: (StoreDocument) -> Unit
-): RecyclerView.Adapter<StoreAdapter.ViewHolder>(){
+    var storeList: List<StoreDocument>,val itemClick: (StoreDocument) -> Unit   ): RecyclerView.Adapter<StoreAdapter.ViewHolder>(){
     private val context:Context
 
     inner class  ViewHolder(itemView: View, val itemClick: (StoreDocument) -> Unit):RecyclerView.ViewHolder(
@@ -58,6 +56,9 @@ class StoreAdapter(
     override fun onBindViewHolder(holder: StoreAdapter.ViewHolder, position: Int) {
         val itemName = storeList[position]
         holder.bind(itemName)
+        holder.itemView.setOnClickListener {
+            itemClick(itemName)
+        }
     }
 
     init {

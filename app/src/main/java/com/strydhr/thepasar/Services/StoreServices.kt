@@ -2,9 +2,12 @@ package com.strydhr.thepasar.Services
 
 import android.content.ContentValues
 import android.util.Log
+import androidx.constraintlayout.widget.Constraints
 import androidx.constraintlayout.widget.Constraints.TAG
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.GeoPoint
+import com.strydhr.thepasar.Model.Product
+import com.strydhr.thepasar.Model.ProductDocument
 import com.strydhr.thepasar.Model.Store
 import com.strydhr.thepasar.Model.StoreDocument
 import com.strydhr.thepasar.Utilities.db
@@ -59,5 +62,24 @@ object StoreServices {
             }
 
         })
+    }
+
+    fun listStoreProduct(store:StoreDocument,complete:(ArrayList<ProductDocument>)-> Unit){
+        println(store.documentId)
+        val productList:ArrayList<ProductDocument> = ArrayList()
+        val docRef = db.collection("product").whereEqualTo("sid",store.documentId).whereEqualTo("isDisabled",false)
+        docRef.get().addOnSuccessListener { document ->
+            if (document != null){
+                for (items in document){
+                    val product = items.toObject(Product::class.java)
+                    val productDoc = ProductDocument(items.id,product)
+                    productList.add(productDoc)
+                }
+                complete(productList)
+            }
+        }
+            .addOnFailureListener { exception ->
+                Log.w(Constraints.TAG, "Error getting documents.", exception)
+            }
     }
 }
