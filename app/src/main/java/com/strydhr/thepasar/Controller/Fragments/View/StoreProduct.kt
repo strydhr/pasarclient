@@ -44,6 +44,17 @@ class StoreProduct : Fragment() {
             productList = it
             println(it.size)
             adapter = ProductAdapter(context!!.applicationContext,productList){
+                var objStr = Gson().toJson(it)
+
+                val bundle = Bundle()
+                bundle.putString("product", objStr)
+                val fragInfo = AddProduct()
+                fragInfo.arguments = bundle
+
+
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragInfo).addToBackStack(null)
+                    .commit()
 
 
             }

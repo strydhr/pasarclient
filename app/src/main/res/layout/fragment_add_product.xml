@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".Controller.Fragments.View.AddProduct">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <RelativeLayout
+            android:id="@+id/addproduct_topcontainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+                android:id="@+id/addproduct_image"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:id="@+id/addproduct_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addproduct_image"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Burger"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/addproduct_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addproduct_image"
+                android:layout_alignParentEnd="true"
+                android:text="RM 15.00"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:layout_marginRight="20dp"/>
+
+            <TextView
+                android:id="@+id/addproduct_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addproduct_name"
+                android:text="RM 15.00"
+                android:layout_marginTop="10dp"
+                android:textSize="20dp"
+                android:textColor="@color/grey"
+                android:layout_marginLeft ="10dp"/>
+
+            <RelativeLayout
+                android:id="@+id/addproduct_topcontainer_separator"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@drawable/separator_btm_grey"
+                android:layout_below="@id/addproduct_description"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+
+            <RelativeLayout
+                android:id="@+id/addproduct_timecontainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addproduct_topcontainer_separator">
+
+                <Button
+                    android:id="@+id/addproduct_breakfastbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:enabled="false"
+                    android:text="For Breakfast"></Button>
+
+
+                <Button
+                    android:id="@+id/addproduct_lunchbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="8dp"
+                    android:enabled="false"
+                    android:layout_below="@id/addproduct_breakfastbtn"
+                    android:text="For Lunch"></Button>
+
+                <Button
+                    android:id="@+id/addproduct_dinnerbtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/addproduct_lunchbtn"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/blueBtn"
+                    android:enabled="false"
+                    android:text="For Dinner"></Button>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/addproduct_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addproduct_timecontainer"
+                android:paddingBottom="1dp"
+                >
+
+                <Spinner
+                    android:id="@+id/addproduct_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@color/white"
+                    android:textColor="@color/blueBtn" />
+                <TextView
+                    android:id="@+id/addproduct_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Meal ready by ..."
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:textSize="18dp"
+                    android:textColor="#68727A"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/addproduct_timecontainer_separator"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@drawable/separator_btm_grey"
+                android:layout_below="@id/addproduct_time"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"/>
+
+            <LinearLayout
+                android:id="@+id/addproduct_addminus_container"
+                android:layout_below="@id/addproduct_timecontainer_separator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Minus"
+                    android:textColor="@color/blueBtn"
+                    style="?android:attr/borderlessButtonStyle"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100"
+                    android:textSize="18dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add"
+                    android:textColor="@color/blueBtn"
+                    style="?android:attr/borderlessButtonStyle"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/addproduct_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:orientation="horizontal"
+                android:layout_below="@id/addproduct_addminus_container"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="Total"
+                    android:textSize="24dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="RM 200.00"
+                    android:textSize="24dp"/>
+            </LinearLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Add to Cart"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:background="@color/turquoiseBtn"
+                android:layout_below="@id/addproduct_total"/>
+
+
+        </RelativeLayout>
+
+
+
+    </ScrollView>
+
+</RelativeLayout>

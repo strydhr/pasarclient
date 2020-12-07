@@ -61,6 +61,9 @@ class ProductAdapter(
     override fun onBindViewHolder(holder: ProductAdapter.ViewHolder, position: Int) {
         val itemName = productList[position]
         holder.bind(itemName)
+        holder.itemView.setOnClickListener {
+            itemClick(itemName)
+        }
     }
 
     init {
