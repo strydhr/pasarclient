@@ -23,10 +23,19 @@ import kotlin.collections.ArrayList
 class AddProduct : Fragment() {
 
     lateinit var productDoc:ProductDocument
+    var itemleft:Int = 0
+    var counter:Int = 1
+
     lateinit var breakfastBtn:Button
     lateinit var lunchBtn:Button
     lateinit var dinnerBtn:Button
+    lateinit var minusBtn:Button
+    lateinit var addBtn:Button
     lateinit var spinner:Spinner
+    lateinit var checkoutBtn:Button
+
+
+
     var hourComponent:Int = 0
     var spinnerArray: ArrayList<String> = ArrayList()
 
@@ -39,10 +48,15 @@ class AddProduct : Fragment() {
         val storeStr = arguments?.getString("product")
         productDoc = Gson().fromJson(storeStr, ProductDocument::class.java)
 
+
         breakfastBtn = rootView.findViewById(R.id.addproduct_breakfastbtn) as Button
         lunchBtn = rootView.findViewById(R.id.addproduct_lunchbtn) as Button
         dinnerBtn = rootView.findViewById(R.id.addproduct_dinnerbtn) as Button
         spinner = rootView.findViewById(R.id.addproduct_spinner) as Spinner
+        minusBtn = rootView.findViewById(R.id.addproduct_minusbtn) as Button
+        addBtn = rootView.findViewById(R.id.addproduct_addbtn) as Button
+
+        checkoutBtn = rootView.findViewById(R.id.addproduct_addtocartbtn) as Button
 
 
         val timeContainer = rootView.findViewById(R.id.addproduct_timecontainer) as RelativeLayout
@@ -55,6 +69,25 @@ class AddProduct : Fragment() {
             timeSpinner.layoutParams.height = 0
             timeSeparator.visibility = View.INVISIBLE
             timeSeparator.layoutParams.height = 0
+
+            if(productDoc.product!!.count == 1){
+                addBtn.isEnabled = false
+                addBtn.setTextColor(resources.getColor(R.color.grey))
+
+            }
+
+        }
+
+        minusBtn.isEnabled = false
+        minusBtn.setTextColor(resources.getColor(R.color.grey))
+
+
+        breakfastBtn.setOnClickListener {
+            breakfastBtnClicked()
+        }
+
+        lunchBtn.setOnClickListener {
+            lunchBtnClicked()
         }
 
         dinnerBtn.setOnClickListener {
@@ -83,7 +116,45 @@ class AddProduct : Fragment() {
 
         })
 
+        minusBtn.setOnClickListener {
+            counter = counter - 1
+            addproduct_counter.text = "$counter"
+            val price = productDoc.product?.price
+            val total = price?.times(counter)
+            addproduct_total_label.text = "RM " + String.format("%.2f", total)
+            if (counter == 1){
+                minusBtn.isEnabled = false
+                minusBtn.setTextColor(resources.getColor(R.color.grey))
+            }
+            if (productDoc.product!!.type == "Handmade") {
+                if (counter < productDoc.product!!.count!!) {
+                    addBtn.isEnabled = true
+                    addBtn.setTextColor(resources.getColor(R.color.blueBtn))
+                }
+            }
+        }
 
+        addBtn.setOnClickListener {
+            counter = counter + 1
+            addproduct_counter.text = "$counter"
+            val price = productDoc.product?.price
+            val total = price?.times(counter)
+            addproduct_total_label.text = "RM " + String.format("%.2f", total)
+            if (counter == 2){
+                minusBtn.isEnabled = true
+                minusBtn.setTextColor(resources.getColor(R.color.blueBtn))
+            }
+            if (productDoc.product!!.type == "Handmade") {
+                if (counter == productDoc.product!!.count) {
+                    addBtn.isEnabled = false
+                    addBtn.setTextColor(resources.getColor(R.color.grey))
+                }
+            }
+        }
+
+        checkoutBtn.setOnClickListener {
+            
+        }
 
 
         return rootView
@@ -104,6 +175,8 @@ class AddProduct : Fragment() {
         addproduct_price.text = "RM " + String.format("%.2f", productDoc.product?.price)
         addproduct_description.text = productDoc.product?.details
 
+        addproduct_total_label.text = "RM " + String.format("%.2f", productDoc.product?.price)
+        addproduct_counter.text = "1"
 
 
     }
@@ -146,6 +219,30 @@ class AddProduct : Fragment() {
 //        if(gmt )
     }
 
+    fun breakfastBtnClicked(){
+        for (i in 7 .. 10){
+            spinnerArray.add("${i}:00")
+        }
+
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+            context!!.applicationContext, android.R.layout.simple_spinner_item, spinnerArray
+        )
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout)
+        spinner.adapter = adapter
+    }
+
+    fun lunchBtnClicked(){
+        for (i in 11 .. 14){
+            spinnerArray.add("${i}:00")
+        }
+
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+            context!!.applicationContext, android.R.layout.simple_spinner_item, spinnerArray
+        )
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout)
+        spinner.adapter = adapter
+    }
+
     fun dinnerBtnClicked(){
         for (i in 17 .. 20){
             spinnerArray.add("${i}:00")
@@ -154,7 +251,9 @@ class AddProduct : Fragment() {
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
             context!!.applicationContext, android.R.layout.simple_spinner_item, spinnerArray
         )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout)
         spinner.adapter = adapter
     }
+
+
 }

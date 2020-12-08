@@ -68,6 +68,7 @@
                 android:id="@+id/addproduct_timecontainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_below="@id/addproduct_topcontainer_separator">
 
                 <Button
@@ -111,6 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/addproduct_timecontainer"
+                android:layout_marginTop="8dp"
                 android:paddingBottom="1dp"
                 >
 
@@ -120,7 +122,7 @@
                     android:layout_height="40dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:background="@color/white"
+                    android:background="@drawable/view_border"
                     android:textColor="@color/blueBtn" />
                 <TextView
                     android:id="@+id/addproduct_hint"
@@ -154,12 +156,14 @@
                 android:layout_centerHorizontal="true">
 
                 <Button
+                    android:id="@+id/addproduct_minusbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Minus"
-                    android:textColor="@color/blueBtn"
+                    android:textColor="@color/grey"
                     style="?android:attr/borderlessButtonStyle"/>
                 <TextView
+                    android:id="@+id/addproduct_counter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="100"
@@ -167,6 +171,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginLeft="20dp"/>
                 <Button
+                    android:id="@+id/addproduct_addbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Add"
@@ -189,6 +194,7 @@
                     android:text="Total"
                     android:textSize="24dp"/>
                 <TextView
+                    android:id="@+id/addproduct_total_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -197,6 +203,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/addproduct_addtocartbtn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
