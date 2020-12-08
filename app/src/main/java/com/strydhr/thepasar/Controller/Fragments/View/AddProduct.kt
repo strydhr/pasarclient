@@ -153,7 +153,7 @@ class AddProduct : Fragment() {
         }
 
         checkoutBtn.setOnClickListener {
-            
+
         }
 
 
