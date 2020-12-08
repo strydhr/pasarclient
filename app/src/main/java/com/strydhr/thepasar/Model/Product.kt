@@ -31,13 +31,19 @@ data class itemPurchasing(
     var productPrice:Double? = null,
     var itemCount:Int? = null,
     @field:JvmField var hasDeliveryTime:Boolean? = null,
-    var colorClass:String? = null
+    var colorClass:Int? = null
 
 
 )
+//For Cart
+class cartItems(
+    var sectionTitle:String? = null,
+    var allItemsInSection: ArrayList<itemPurchasing>? = null
+)
+//
 
 data class Order(
-    var items:ArrayList<itemPurchasing>? = null,
+    var items:List<itemPurchasing>? = null,
     @ServerTimestamp var date: Date? = null,
     @field:JvmField var hasDeliveryTime:Boolean? = null,
     @ServerTimestamp var deliveryTime: Date? = null,

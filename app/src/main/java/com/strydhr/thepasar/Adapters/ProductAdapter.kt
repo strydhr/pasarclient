@@ -32,7 +32,7 @@ class ProductAdapter(
             Glide.with(itemView.context).load(item.product?.profileImage).into(productImage)
             productName.text = item.product?.name
             productType.text = item.product?.type
-            productPrice.text = "RM ${(String.format("%.0f",item.product?.price))}"
+            productPrice.text = "RM ${(String.format("%.2f",item.product?.price))}"
 
         }
 

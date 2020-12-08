@@ -37,6 +37,9 @@
         <activity
             android:name=".Controller.Fragments.View.PopupUpdateRadius"
             android:theme="@style/AppTheme.CustomTheme" />
+        <activity
+            android:name=".Controller.Fragments.View.PopupAddProduct"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".MainActivity">
         </activity>

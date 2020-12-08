@@ -1,19 +1,29 @@
 package com.strydhr.thepasar.Controller.Fragments.View
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.TypedValue
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.strydhr.thepasar.Adapters.ProductAdapter
 import com.strydhr.thepasar.Model.ProductDocument
 import com.strydhr.thepasar.Model.StoreDocument
-
+import com.strydhr.thepasar.Model.itemPurchasing
 import com.strydhr.thepasar.R
 import com.strydhr.thepasar.Services.StoreServices
 import kotlinx.android.synthetic.main.fragment_store_product.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 /**
  * A simple [Fragment] subclass.
@@ -23,6 +33,11 @@ class StoreProduct : Fragment() {
     lateinit var storeDoc:StoreDocument
     lateinit var adapter:ProductAdapter
     var productList: MutableList<ProductDocument> = ArrayList()
+    var cart: MutableList<itemPurchasing> = ArrayList()
+    var hasDeliveryTime = false
+    lateinit var dateStr:String
+
+    lateinit var proceedBtn:Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,8 +45,29 @@ class StoreProduct : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val rootView =  inflater.inflate(R.layout.fragment_store_product, container, false)
+        proceedBtn = rootView.findViewById(R.id.store_product_checkoutbtn) as Button
+
         val storeStr = arguments?.getString("store")
-        storeDoc = Gson().fromJson(storeStr,StoreDocument::class.java)
+        storeDoc = Gson().fromJson(storeStr, StoreDocument::class.java)
+
+        proceedBtn.setOnClickListener {
+            var objStr = Gson().toJson(cart)
+//            var dateStr = Gson().toJson()
+            var storeStr = Gson().toJson(storeDoc)
+            println(objStr)
+
+            val bundle = Bundle()
+            bundle.putString("items", objStr)
+            bundle.putString("date",dateStr)
+            bundle.putString("store",storeStr)
+            bundle.putBoolean("theresDeliveryTime",hasDeliveryTime)
+            val fragInfo = Cart()
+            fragInfo.arguments = bundle
+            fragInfo.setTargetFragment(this,2)
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragInfo).addToBackStack(null)
+                .commit()
+        }
 
 
         return rootView
@@ -43,18 +79,26 @@ class StoreProduct : Fragment() {
         StoreServices.listStoreProduct(storeDoc){
             productList = it
             println(it.size)
-            adapter = ProductAdapter(context!!.applicationContext,productList){
+            adapter = ProductAdapter(context!!.applicationContext, productList){
                 var objStr = Gson().toJson(it)
+                val cartStr = Gson().toJson(cart)
+//                val bundle = Bundle()
+//                bundle.putString("product", objStr)
+//                val fragInfo = AddProduct()
+//                fragInfo.arguments = bundle
+//
+//
+//                requireActivity().supportFragmentManager.beginTransaction()
+//                    .replace(R.id.fragment_container, fragInfo).addToBackStack(null)
+//                    .commit()
 
-                val bundle = Bundle()
-                bundle.putString("product", objStr)
-                val fragInfo = AddProduct()
-                fragInfo.arguments = bundle
-
-
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, fragInfo).addToBackStack(null)
-                    .commit()
+                var addProductPopup = Intent(
+                    context!!.applicationContext,
+                    PopupAddProduct::class.java
+                )
+                addProductPopup.putExtra("product", objStr)
+//                addProductPopup.putExtra("cart",cartStr)
+                startActivityForResult(addProductPopup, 1)
 
 
             }
@@ -64,5 +108,33 @@ class StoreProduct : Fragment() {
             viewproduct_recyclerview.setHasFixedSize(true)
         }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                val itemStr = data?.getStringExtra("item")
+                val item = Gson().fromJson<itemPurchasing>(itemStr, itemPurchasing::class.java)
+                dateStr = data?.getStringExtra("date")!!
+                val formatter = SimpleDateFormat("yyyy-MM-dd 'at' HH:mm", Locale.ENGLISH)
+//                date = formatter.parse(dateStr)
+                hasDeliveryTime = data?.getBooleanExtra("hasDeliverytime", false)!!
+
+                cart.add(item)
+                println(cart.size)
+                if (cart.size > 0){
+
+                    proceedBtn.isEnabled = true
+
+
+                }
+
+            }
+        }else if (requestCode == 2){
+            cart.clear()
+        }
+    }
+
+
 
 }
