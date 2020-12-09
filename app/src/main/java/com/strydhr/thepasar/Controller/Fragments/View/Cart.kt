@@ -92,7 +92,7 @@ class Cart : Fragment() {
                     store.store?.name,
                     store.store?.ownerId,
                     false,
-                    0,
+                    1,
                     ""
                 )
                 PurchaseServices.confirmPurchase(order)
@@ -114,7 +114,7 @@ class Cart : Fragment() {
                     store.store?.name,
                     store.store?.ownerId,
                     false,
-                    0,
+                    1,
                     ""
                 )
                 PurchaseServices.confirmPurchase(order)
