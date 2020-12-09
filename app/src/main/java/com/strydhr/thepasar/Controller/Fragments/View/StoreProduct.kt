@@ -50,24 +50,29 @@ class StoreProduct : Fragment() {
         val storeStr = arguments?.getString("store")
         storeDoc = Gson().fromJson(storeStr, StoreDocument::class.java)
 
-        proceedBtn.setOnClickListener {
-            var objStr = Gson().toJson(cart)
-//            var dateStr = Gson().toJson()
-            var storeStr = Gson().toJson(storeDoc)
-            println(objStr)
 
-            val bundle = Bundle()
-            bundle.putString("items", objStr)
-            bundle.putString("date",dateStr)
-            bundle.putString("store",storeStr)
-            bundle.putBoolean("theresDeliveryTime",hasDeliveryTime)
-            val fragInfo = Cart()
-            fragInfo.arguments = bundle
-            fragInfo.setTargetFragment(this,2)
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragInfo).addToBackStack(null)
-                .commit()
+            proceedBtn.setOnClickListener {
+                if (cart.size > 0) {
+                    var objStr = Gson().toJson(cart)
+//            var dateStr = Gson().toJson()
+                    var storeStr = Gson().toJson(storeDoc)
+                    println(objStr)
+
+                    val bundle = Bundle()
+                    bundle.putString("items", objStr)
+                    bundle.putString("date", dateStr)
+                    bundle.putString("store", storeStr)
+                    bundle.putBoolean("theresDeliveryTime", hasDeliveryTime)
+                    val fragInfo = Cart()
+                    fragInfo.arguments = bundle
+                    fragInfo.setTargetFragment(this, 2)
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, fragInfo).addToBackStack(null)
+                        .commit()
+                }
+
         }
+
 
 
         return rootView
@@ -122,18 +127,20 @@ class StoreProduct : Fragment() {
 
                 cart.add(item)
                 println(cart.size)
-                if (cart.size > 0){
-
-                    proceedBtn.isEnabled = true
-
-
-                }
+//                if (cart.size > 0){
+//
+//                    proceedBtn.isEnabled = true
+//
+//
+//                }
 
             }
         }else if (requestCode == 2){
             cart.clear()
         }
     }
+
+    
 
 
 

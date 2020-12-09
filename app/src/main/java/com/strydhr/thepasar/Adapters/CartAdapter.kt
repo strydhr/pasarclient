@@ -55,6 +55,15 @@ class CartAdapter(
 
     }
 
+    fun removeItem(position: Int):itemPurchasing{
+        var name = cartList[position]
+        cartList.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, cartList.size)
+
+        return name!!
+    }
+
     init {
         this.context = context
     }

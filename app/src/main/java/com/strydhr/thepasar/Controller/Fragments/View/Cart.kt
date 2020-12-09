@@ -2,6 +2,7 @@ package com.strydhr.thepasar.Controller.Fragments.View
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.graphics.*
 import android.os.Bundle
 import android.provider.MediaStore.Video
 import android.view.LayoutInflater
@@ -9,7 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.strydhr.thepasar.Adapters.CartAdapter
 import com.strydhr.thepasar.Model.Order
@@ -36,6 +39,7 @@ class Cart : Fragment() {
     lateinit var date:Date
     lateinit var checkoutBtn:Button
 
+    private val p = Paint()
 
 
     var hourComponent:Int = 0
@@ -130,17 +134,99 @@ class Cart : Fragment() {
         val layoutManager = LinearLayoutManager(context!!.applicationContext)
         cart_recyclerview.layoutManager = layoutManager
         cart_recyclerview.setHasFixedSize(true)
+//        enableSwipe()
     }
 
 
     private fun exit(){
-//        fragmentManager.
-//        fragmentManager?.popBackStackImmediate()
-
         val intent = Intent(context, StoreProduct::class.java)
         intent.putExtra("doneCheckout", true)
         targetFragment?.onActivityResult(2,RESULT_OK, intent)
         fragmentManager?.popBackStack()
     }
+
+//    private fun enableSwipe() {
+//        val simpleItemTouchCallback =
+//            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
+//
+//                override fun onMove(
+//                    recyclerView: RecyclerView,
+//                    viewHolder: RecyclerView.ViewHolder,
+//                    target: RecyclerView.ViewHolder
+//                ): Boolean {
+//                    return false
+//                }
+//
+//                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//                    val position = viewHolder.adapterPosition
+//
+//
+//                    var removedItem = adapter!!.removeItem(position)
+//                    cartList = cartList?.filter { it != removedItem } as ArrayList<itemPurchasing>
+////                    var itemToDelete = removedItem.content
+////                    var list = realm.where(RealmChecklist::class.java).equalTo("content",itemToDelete).findFirst()
+////                    realm.beginTransaction()
+////                    list?.deleteFromRealm()
+////                    realm.commitTransaction()
+////                    adapter.notifyDataSetChanged()
+//
+//
+//                }
+//
+//                override fun onChildDraw(
+//                    c: Canvas,
+//                    recyclerView: RecyclerView,
+//                    viewHolder: RecyclerView.ViewHolder,
+//                    dX: Float,
+//                    dY: Float,
+//                    actionState: Int,
+//                    isCurrentlyActive: Boolean
+//                ) {
+//
+//                    val icon: Bitmap
+//                    if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+//
+//                        val itemView = viewHolder.itemView
+//                        val height = itemView.bottom.toFloat() - itemView.top.toFloat()
+//                        val width = height / 3
+//
+//                        if (dX > 0) {
+//                            p.color = Color.parseColor("#388E3C")
+//                            val background =
+//                                RectF(itemView.left.toFloat(), itemView.top.toFloat(), dX, itemView.bottom.toFloat())
+//                            c.drawRect(background, p)
+//                            icon = BitmapFactory.decodeResource(resources, R.drawable.delete)
+//                            val icon_dest = RectF(
+//                                itemView.left.toFloat() + width,
+//                                itemView.top.toFloat() + width,
+//                                itemView.left.toFloat() + 2 * width,
+//                                itemView.bottom.toFloat() - width
+//                            )
+//                            c.drawBitmap(icon, null, icon_dest, p)
+//                        } else {
+//                            p.color = Color.parseColor("#D32F2F")
+//                            val background = RectF(
+//                                itemView.right.toFloat() + dX,
+//                                itemView.top.toFloat(),
+//                                itemView.right.toFloat(),
+//                                itemView.bottom.toFloat()
+//                            )
+//                            c.drawRect(background, p)
+//                            icon = BitmapFactory.decodeResource(resources, R.drawable.delete)
+//                            val icon_dest = RectF(
+//                                itemView.right.toFloat() - 2 * width,
+//                                itemView.top.toFloat() + width,
+//                                itemView.right.toFloat() - width,
+//                                itemView.bottom.toFloat() - width
+//                            )
+//                            c.drawBitmap(icon, null, icon_dest, p)
+//                        }
+//                    }
+//                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+//                }
+//            }
+//        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+//        itemTouchHelper.attachToRecyclerView(cart_recyclerview)
+//    }
 
 }

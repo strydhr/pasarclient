@@ -18,7 +18,7 @@
         android:id="@+id/store_product_checkoutbtn"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:enabled="false"
+
         android:text="Check Out"
         android:textAllCaps="false"
         android:textColor="@color/white"
