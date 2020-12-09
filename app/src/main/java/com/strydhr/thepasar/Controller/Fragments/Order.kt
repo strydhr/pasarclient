@@ -69,7 +69,6 @@ class Order : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        println("hello")
         listener.remove()
     }
 

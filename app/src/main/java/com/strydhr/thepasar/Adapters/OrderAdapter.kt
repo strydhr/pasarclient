@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.strydhr.thepasar.Model.StoreDocument
 import com.strydhr.thepasar.R
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class OrderAdapter(
     context: Context,
@@ -31,7 +34,12 @@ class OrderAdapter(
 
 
             storeName.text = item.order?.storeName
-//            storeType.text = item.store?.type
+
+            if(item.order!!.hasDeliveryTime!!){
+                deliveryTime.text = timeStr(item.order?.deliveryTime!!)
+            }else{
+                deliveryTime.text = ""
+            }
             var total = 0
             for(items in item.order?.items!!){
                 total += items.itemCount!!
@@ -46,8 +54,9 @@ class OrderAdapter(
                 if (item!!.order?.confirmationStatus == 0){
                     statusIcon.visibility = View.VISIBLE
                     statusButton.text = "Rejected"
+                    statusIcon.setImageResource(R.drawable.rejected)
                 }else if (item!!.order?.confirmationStatus == 2){
-
+                    statusButton.text = "Confirmed"
                 }
             }
         }
@@ -87,6 +96,23 @@ class OrderAdapter(
         this.context = context
     }
 
+    fun timeStr(date:Date): String {
+        val dateformatter = SimpleDateFormat("HH:mm")
+        val dateStr = dateformatter.format(date)
+
+
+        return dateStr
+
+    }
+    fun dateStr(date:Date): String {
+        val dateformatter = SimpleDateFormat("dd-mm-yyyy")
+        val dateStr = dateformatter.format(date)
+
+
+        return dateStr
+
+    }
+
 //    fun updateAdapter( list: ArrayList<StoreDocument>) {
 //        storeList = list
 //        // update adapter element like NAME, EMAIL e.t.c. here
@@ -94,4 +120,6 @@ class OrderAdapter(
 //        // then in order to refresh the views notify the RecyclerView
 //        notifyDataSetChanged()
 //    }
+
+
 }

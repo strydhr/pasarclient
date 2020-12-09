@@ -76,6 +76,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:text="Rejected"
+            android:textAllCaps="false"
             android:background="@color/blueBtn"
             android:textColor="@color/white"
             android:layout_marginTop="10dp"/>
