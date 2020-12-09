@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.strydhr.thepasar.Model.itemPurchasing
 import com.strydhr.thepasar.R
 
+// Need to add notification
 class CartAdapter(
     context: Context,
     var cartList: ArrayList<itemPurchasing>): RecyclerView.Adapter<CartAdapter.ViewHolder>(){
