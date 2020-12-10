@@ -1,7 +1,12 @@
 package com.strydhr.thepasar.Services
 
+import android.util.Log
+import androidx.constraintlayout.widget.Constraints
 import com.strydhr.thepasar.Model.Order
+import com.strydhr.thepasar.Model.ReceiptDocument
+import com.strydhr.thepasar.Model.Receipts
 import com.strydhr.thepasar.Utilities.db
+import com.strydhr.thepasar.Utilities.userGlobal
 
 object PurchaseServices {
     fun confirmPurchase(receipt:Order){
@@ -9,5 +14,23 @@ object PurchaseServices {
         db.collection("orders").add(receipt).addOnSuccessListener {
 
         }
+    }
+
+    fun listPastPurchases(complete:(ArrayList<ReceiptDocument>)-> Unit){
+        var receiptList:ArrayList<ReceiptDocument> = ArrayList()
+        val docRef = db.collection("receipt").whereEqualTo("purchaserId", userGlobal?.uid).whereEqualTo("caseClosed",true)
+        docRef.get().addOnSuccessListener { document ->
+            if (document != null){
+                for (items in document){
+                    val receipt = items.toObject(Receipts::class.java)
+                    val receiptDoc = ReceiptDocument(items.id,receipt)
+                    receiptList.add(receiptDoc)
+                }
+                complete(receiptList)
+            }
+        }
+            .addOnFailureListener { exception ->
+                Log.w(Constraints.TAG, "Error getting documents.", exception)
+            }
     }
 }

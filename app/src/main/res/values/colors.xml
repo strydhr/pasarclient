@@ -6,6 +6,7 @@
 
     <color name="white">#fff</color>
     <color name="grey">#9a9a9a</color>
+    <color name="lightgrey">#dddddd</color>
     <color name="blueBtn">#0075e3</color>
     <color name="turquoiseBtn">#47b2db</color>
 </resources>
