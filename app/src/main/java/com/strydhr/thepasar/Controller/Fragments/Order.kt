@@ -1,5 +1,6 @@
 package com.strydhr.thepasar.Controller.Fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,7 +9,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.ListenerRegistration
+import com.google.gson.Gson
 import com.strydhr.thepasar.Adapters.OrderAdapter
+import com.strydhr.thepasar.Controller.Fragments.View.PopupRejectedComment
 import com.strydhr.thepasar.Model.OrderDocument
 import com.strydhr.thepasar.Model.ReceiptDocument
 
@@ -18,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_order.*
 
 /**
  * A simple [Fragment] subclass.
+ * try with rejects
  */
 class Order : Fragment() {
     lateinit var listener: ListenerRegistration
@@ -37,13 +41,28 @@ class Order : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        listener2 = OrderServices.realtimeListUpdate2 { it
-            receiptList = it
-        }
+
 
         listener = OrderServices.realtimeListUpdate(){
             orderList = it
-            adapter = OrderAdapter(context!!.applicationContext, it,receiptList){
+            listener2 = OrderServices.realtimeListUpdate2 { receiptist ->
+                receiptList = receiptist
+                println(it.size)
+
+                adapter = OrderAdapter(context!!.applicationContext, orderList,receiptList){
+
+                    if (it.order?.confirmationStatus == 0){
+                        var objStr = Gson().toJson(it)
+                        var rejectPopup = Intent(
+                            context!!.applicationContext,
+                            PopupRejectedComment::class.java
+                        )
+                        rejectPopup.putExtra("order", objStr)
+                        startActivity(rejectPopup)
+                    }
+
+
+
 //                var objStr = Gson().toJson(it)
 //                val cartStr = Gson().toJson(cart)
 //                val bundle = Bundle()
@@ -65,12 +84,15 @@ class Order : Fragment() {
 //                startActivityForResult(addProductPopup, 1)
 
 
+                }
+                order_recyclerview.adapter = adapter
+                val layoutManager = LinearLayoutManager(context!!.applicationContext)
+                order_recyclerview.layoutManager = layoutManager
+                order_recyclerview.setHasFixedSize(true)
             }
-            order_recyclerview.adapter = adapter
-            val layoutManager = LinearLayoutManager(context!!.applicationContext)
-            order_recyclerview.layoutManager = layoutManager
-            order_recyclerview.setHasFixedSize(true)
+
         }
+
 
     }
 

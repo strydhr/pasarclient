@@ -59,7 +59,11 @@ class OrderAdapter(
                 }else if (item!!.order?.confirmationStatus == 2){
                     statusButton.text = "Confirmed"
                     val index = receiptList.indexOfFirst { it.receipt?.orderId == item.documentId }
-                    if (index != null){
+                    println(index)
+//                    if (receiptList[index].receipt?.orderId == item.documentId){
+//
+//                    }
+                    if (index > -1){
                         statusIcon.setImageResource(R.drawable.delivery)
                         statusButton.text = "Delivered"
                     }
