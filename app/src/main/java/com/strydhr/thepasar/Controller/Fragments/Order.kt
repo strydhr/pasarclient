@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.ListenerRegistration
 import com.strydhr.thepasar.Adapters.OrderAdapter
 import com.strydhr.thepasar.Model.OrderDocument
+import com.strydhr.thepasar.Model.ReceiptDocument
 
 import com.strydhr.thepasar.R
 import com.strydhr.thepasar.Services.OrderServices
@@ -20,9 +21,11 @@ import kotlinx.android.synthetic.main.fragment_order.*
  */
 class Order : Fragment() {
     lateinit var listener: ListenerRegistration
+    lateinit var listener2: ListenerRegistration
     lateinit var adapter: OrderAdapter
 
     var orderList:ArrayList<OrderDocument> = ArrayList()
+    var receiptList:ArrayList<ReceiptDocument> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,9 +37,13 @@ class Order : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        listener2 = OrderServices.realtimeListUpdate2 { it
+            receiptList = it
+        }
+
         listener = OrderServices.realtimeListUpdate(){
             orderList = it
-            adapter = OrderAdapter(context!!.applicationContext, it){
+            adapter = OrderAdapter(context!!.applicationContext, it,receiptList){
 //                var objStr = Gson().toJson(it)
 //                val cartStr = Gson().toJson(cart)
 //                val bundle = Bundle()
@@ -70,6 +77,7 @@ class Order : Fragment() {
     override fun onStop() {
         super.onStop()
         listener.remove()
+        listener2.remove()
     }
 
 }

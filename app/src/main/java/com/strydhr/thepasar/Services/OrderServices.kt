@@ -6,6 +6,8 @@ import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.ListenerRegistration
 import com.strydhr.thepasar.Model.Order
 import com.strydhr.thepasar.Model.OrderDocument
+import com.strydhr.thepasar.Model.ReceiptDocument
+import com.strydhr.thepasar.Model.Receipts
 import com.strydhr.thepasar.Utilities.db
 import com.strydhr.thepasar.Utilities.userGlobal
 import java.text.SimpleDateFormat
@@ -49,6 +51,42 @@ object OrderServices {
 
 
     }
+
+    fun realtimeListUpdate2(complete:(ArrayList<ReceiptDocument>)->Unit):ListenerRegistration{
+
+        val receiptList:ArrayList<ReceiptDocument> = ArrayList()
+        val startOfDay = dateFinder("6:00")
+
+
+        val dbRef = db.collection("receipt").whereEqualTo("purchaserId", userGlobal?.uid).whereEqualTo("caseClosed",true)
+        return dbRef.addSnapshotListener { snapshot, error ->
+            if(error == null){
+                for (dc in snapshot!!.documentChanges) {
+                    when (dc.type) {
+                        DocumentChange.Type.ADDED -> {
+                            val receipt = dc.document.toObject(Receipts::class.java)
+                            val receiptDoc = ReceiptDocument(dc.document.id,receipt)
+                            receiptList.add(receiptDoc)
+                        }
+                        DocumentChange.Type.MODIFIED -> {
+                            val newReceipt = dc.document.toObject(Receipts::class.java)
+                            val index = receiptList.indexOfFirst { it.documentId == dc.document.id }
+                            if (index != null){
+                                receiptList[index].receipt = newReceipt
+                            }
+
+                        }
+//                        DocumentChange.Type.REMOVED -> Log.d(TAG, "Removed city: ${dc.document.data}")
+                    }
+                    complete(receiptList)
+                }
+            }
+        }
+
+
+    }
+
+
 
     fun dateFinder(time:String):Date{
         val dateformatter = SimpleDateFormat("yyyy-MM-dd")

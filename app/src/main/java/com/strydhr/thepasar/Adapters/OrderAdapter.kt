@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.strydhr.thepasar.Model.ReceiptDocument
 import com.strydhr.thepasar.Model.StoreDocument
 import com.strydhr.thepasar.R
 import java.text.SimpleDateFormat
@@ -18,7 +19,7 @@ import kotlin.collections.ArrayList
 
 class OrderAdapter(
     context: Context,
-    var orderList: ArrayList<OrderDocument>,val itemClick: (OrderDocument) -> Unit   ): RecyclerView.Adapter<OrderAdapter.ViewHolder>(){
+    var orderList: ArrayList<OrderDocument>,var receiptList: ArrayList<ReceiptDocument>,val itemClick: (OrderDocument) -> Unit   ): RecyclerView.Adapter<OrderAdapter.ViewHolder>(){
     private val context:Context
 
     inner class  ViewHolder(itemView: View, val itemClick: (OrderDocument) -> Unit):RecyclerView.ViewHolder(
@@ -57,6 +58,11 @@ class OrderAdapter(
                     statusIcon.setImageResource(R.drawable.rejected)
                 }else if (item!!.order?.confirmationStatus == 2){
                     statusButton.text = "Confirmed"
+                    val index = receiptList.indexOfFirst { it.receipt?.orderId == item.documentId }
+                    if (index != null){
+                        statusIcon.setImageResource(R.drawable.delivery)
+                        statusButton.text = "Delivered"
+                    }
                 }
             }
         }
