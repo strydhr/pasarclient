@@ -89,7 +89,7 @@ data class Receipts(
 data class ReceiptDocument(
     var documentId:String? = null,
     var receipt:Receipts? = null
-)
+) : (OrderDocument) -> Unit
 
 data class Complaint(
     var items:ArrayList<itemPurchasing>? = null,
