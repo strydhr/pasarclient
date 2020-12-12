@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.strydhr.thepasar.Controller.Fragments.History
 import com.strydhr.thepasar.Controller.Fragments.HomeMain
 import com.strydhr.thepasar.Controller.Fragments.Order
 import com.strydhr.thepasar.R
@@ -24,7 +25,7 @@ class MainTabActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.action_history -> {
-//                replaceFragment(TenantPayment())
+                replaceFragment(History())
                 return@OnNavigationItemSelectedListener true
             }
 

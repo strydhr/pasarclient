@@ -41,6 +41,9 @@
             android:name=".Controller.Fragments.View.PopupRejectedComment"
             android:theme="@style/AppTheme.CustomTheme" />
         <activity
+            android:name=".Controller.Fragments.View.PopupLodgeComplaint"
+            android:theme="@style/AppTheme.CustomTheme" />
+        <activity
             android:name=".Controller.Fragments.View.PopupAddProduct"
             android:theme="@style/AppTheme.NoActionBar" />
 
