@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingBottom="1dp">
+
+
+    <RelativeLayout
+        android:id="@+id/history_contentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/lightgrey"
+
+        >
+
+
+        <TextView
+            android:id="@+id/order_delivery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delivery Time:"
+            android:textSize="19dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/history_delivery_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:00 PM"
+            android:textColor="@color/blueBtn"
+            android:layout_toRightOf="@id/order_delivery"
+            android:textSize="19dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/history_store_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Strydhr's Int"
+            android:textSize="17dp"
+            android:layout_below="@id/order_delivery"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/order_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="46dp"
+            android:layout_toLeftOf="@id/history_count_number"
+            android:text="Orders:"
+            android:textSize="17dp"
+
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/history_count_number"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="46dp"
+            android:layout_marginRight="20dp"
+            android:text="30"
+            android:textColor="@color/blueBtn"
+            android:layout_alignParentRight="true"
+
+            android:textSize="17dp"
+
+            android:textStyle="bold" />
+
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>
