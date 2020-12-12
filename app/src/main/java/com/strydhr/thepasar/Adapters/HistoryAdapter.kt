@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
@@ -21,6 +22,9 @@ import com.strydhr.thepasar.Model.ReceiptDocument
 import com.strydhr.thepasar.R
 import com.tr4android.recyclerviewslideitem.SwipeAdapter
 import com.tr4android.recyclerviewslideitem.SwipeConfiguration
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class SampleAdapter(private val mContext: Context,dataset:ArrayList<ReceiptDocument>, private val mRecyclerView: RecyclerView ) :
@@ -32,21 +36,23 @@ class SampleAdapter(private val mContext: Context,dataset:ArrayList<ReceiptDocum
     )
 
     inner class SampleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var contentView: LinearLayout
-        var avatarView: View
-        var textView: TextView
+        var contentView: RelativeLayout
+        var storeLabel: TextView
+        var deliveryTime: TextView
+        var orderCount: TextView
 
         init {
-            contentView = view.findViewById<View>(R.id.contentView) as LinearLayout
-            avatarView = view.findViewById(R.id.avatarView)
-            textView = view.findViewById<View>(R.id.textView) as TextView
+            contentView = view.findViewById<View>(R.id.history_contentView) as RelativeLayout
+            storeLabel = view.findViewById<View>(R.id.history_store_name) as TextView
+            deliveryTime = view.findViewById<View>(R.id.history_delivery_time) as TextView
+            orderCount = view.findViewById<View>(R.id.history_count_number) as TextView
             contentView.setOnClickListener(this@SampleAdapter)
         }
     }
 
     override fun onCreateSwipeViewHolder(parent: ViewGroup, i: Int): RecyclerView.ViewHolder {
         val v: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_item_layout, parent, true)
+            .inflate(R.layout.row_history_item, parent, true)
         return SampleViewHolder(v)
     }
 
@@ -55,8 +61,13 @@ class SampleAdapter(private val mContext: Context,dataset:ArrayList<ReceiptDocum
         val drawable = ShapeDrawable(OvalShape())
         drawable.paint.color =
             mContext.resources.getColor(colors[(Math.random() * (colors.size - 1)).toInt()])
-        sampleViewHolder.avatarView.setBackgroundDrawable(drawable)
-        sampleViewHolder.textView.text = mDataset[i].receipt?.storeName
+        sampleViewHolder.storeLabel.text = mDataset[i].receipt?.storeName
+        sampleViewHolder.deliveryTime.text = dateStr(mDataset[i].receipt?.deliveryTime!!)
+        var total = 0
+        for(items in mDataset[i].receipt?.items!!){
+            total += items.itemCount!!
+        }
+        sampleViewHolder.orderCount.text = total.toString()
     }
 
     override fun onCreateSwipeConfiguration(context: Context, position: Int): SwipeConfiguration {
@@ -96,13 +107,7 @@ class SampleAdapter(private val mContext: Context,dataset:ArrayList<ReceiptDocum
 
 
         }
-//        else {
-//            val toast = Toast.makeText(
-//                mContext,
-//                "Marked item as read at position $position", Toast.LENGTH_SHORT
-//            )
-//            toast.show()
-//        }
+
     }
 
     override fun onClick(view: View) {
@@ -117,13 +122,14 @@ class SampleAdapter(private val mContext: Context,dataset:ArrayList<ReceiptDocum
         return mDataset.size
     }
 
-//    init {
-//        // create dummy dataset
-//        mDataset = ArrayList()
-//        for (i in 0..24) {
-//            mDataset.add("person" + (i + 1).toString() + "@sample.com")
-//        }
-//    }
+    fun dateStr(date: Date): String {
+        val dateformatter = SimpleDateFormat("yyyy-MM-dd 'at' HH:mm", Locale.ENGLISH)
+        val dateStr = dateformatter.format(date)
+
+
+        return dateStr
+
+    }
 }
 
 //class HistoryAdapter(
