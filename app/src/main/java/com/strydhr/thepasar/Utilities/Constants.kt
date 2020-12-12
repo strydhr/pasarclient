@@ -5,6 +5,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.strydhr.thepasar.Model.User
 
+val googleApi = "AIzaSyDUCD9JHOWuWojooiuumVdLMBFSdQVV73w"
+
 val db = Firebase.firestore
 val storage = Firebase.storage
 

@@ -9,6 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.strydhr.thepasar.Controller.Fragments.History
 import com.strydhr.thepasar.Controller.Fragments.HomeMain
 import com.strydhr.thepasar.Controller.Fragments.Order
+import com.strydhr.thepasar.Controller.Fragments.Profile
 import com.strydhr.thepasar.R
 
 class MainTabActivity : AppCompatActivity() {
@@ -30,7 +31,7 @@ class MainTabActivity : AppCompatActivity() {
             }
 
             R.id.action_profile -> {
-//                replaceFragment(Profile())
+                replaceFragment(Profile())
                 return@OnNavigationItemSelectedListener true
             }
 
