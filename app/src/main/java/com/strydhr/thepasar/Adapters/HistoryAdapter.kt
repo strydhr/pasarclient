@@ -23,7 +23,7 @@ import com.tr4android.recyclerviewslideitem.SwipeAdapter
 import com.tr4android.recyclerviewslideitem.SwipeConfiguration
 
 
-class SampleAdapter(private val mContext: Context,dataset:ArrayList<ReceiptDocument>, private val mRecyclerView: RecyclerView,val itemClick: (OrderDocument) -> Unit   ) :
+class SampleAdapter(private val mContext: Context,dataset:ArrayList<ReceiptDocument>, private val mRecyclerView: RecyclerView ) :
     SwipeAdapter(), View.OnClickListener {
     var mDataset: ArrayList<ReceiptDocument> = dataset
     var colors = intArrayOf(
@@ -46,8 +46,8 @@ class SampleAdapter(private val mContext: Context,dataset:ArrayList<ReceiptDocum
 
     override fun onCreateSwipeViewHolder(parent: ViewGroup, i: Int): RecyclerView.ViewHolder {
         val v: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_item_layout, parent, false)
-        return SampleViewHolder(v,itemClick)
+            .inflate(R.layout.list_item_layout, parent, true)
+        return SampleViewHolder(v)
     }
 
     override fun onBindSwipeViewHolder(swipeViewHolder: RecyclerView.ViewHolder, i: Int) {
@@ -84,7 +84,16 @@ class SampleAdapter(private val mContext: Context,dataset:ArrayList<ReceiptDocum
             )
             toast.show()
             val receipt = mDataset[position]
-            itemClick = receipt
+            val objStr = Gson().toJson(receipt)
+
+            var rejectPopup = Intent(mContext.applicationContext
+                ,
+                PopupLodgeComplaint::class.java
+            )
+            rejectPopup.putExtra("receipt", objStr)
+            rejectPopup.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(rejectPopup)
+
 
         }
 //        else {
