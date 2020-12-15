@@ -3,15 +3,14 @@ package com.strydhr.thepasar.Controller.Fragments.View
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import com.google.gson.Gson
 import com.strydhr.thepasar.Adapters.ProductAdapter
 import com.strydhr.thepasar.Model.ProductDocument
@@ -38,6 +37,8 @@ class StoreProduct : Fragment() {
     lateinit var dateStr:String
 
     lateinit var proceedBtn:Button
+
+    lateinit var mAdView : AdView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,12 +75,20 @@ class StoreProduct : Fragment() {
         }
 
 
+        val adRequest = AdRequest.Builder()
+            .build()
+
+        val adView = rootView.findViewById(R.id.adView) as AdView
+        adView.loadAd(adRequest)
 
         return rootView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+
+
 
         StoreServices.listStoreProduct(storeDoc){
             productList = it
@@ -126,21 +135,23 @@ class StoreProduct : Fragment() {
                 hasDeliveryTime = data?.getBooleanExtra("hasDeliverytime", false)!!
 
                 cart.add(item)
-                println(cart.size)
-//                if (cart.size > 0){
-//
-//                    proceedBtn.isEnabled = true
-//
-//
-//                }
+
 
             }
         }else if (requestCode == 2){
             cart.clear()
         }
+        else if (requestCode == 3){
+            if (resultCode == Activity.RESULT_OK){
+                var itemStr = data?.getStringExtra("cartUpdated")
+                val array = Gson().fromJson<Array<itemPurchasing>>(itemStr, Array<itemPurchasing>::class.java)
+                cart = ArrayList(array.toMutableList())
+
+            }
+        }
     }
 
-    
+
 
 
 

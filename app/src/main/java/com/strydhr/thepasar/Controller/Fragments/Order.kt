@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_order.*
 
 /**
  * A simple [Fragment] subclass.
- * try with rejects
+ * crashes when listner 2 = 0
  */
 class Order : Fragment() {
     lateinit var listener: ListenerRegistration

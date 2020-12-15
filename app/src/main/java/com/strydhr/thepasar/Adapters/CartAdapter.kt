@@ -69,11 +69,4 @@ class CartAdapter(
         this.context = context
     }
 
-//    fun updateAdapter( list: ArrayList<StoreDocument>) {
-//        storeList = list
-//        // update adapter element like NAME, EMAIL e.t.c. here
-//
-//        // then in order to refresh the views notify the RecyclerView
-//        notifyDataSetChanged()
-//    }
 }

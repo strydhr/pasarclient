@@ -1,6 +1,7 @@
 package com.strydhr.thepasar.Controller.Fragments.View
 
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.graphics.*
 import android.os.Bundle
@@ -13,6 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 import com.google.gson.Gson
 import com.strydhr.thepasar.Adapters.CartAdapter
 import com.strydhr.thepasar.Model.Order
@@ -40,7 +43,7 @@ class Cart : Fragment() {
     lateinit var checkoutBtn:Button
 
     private val p = Paint()
-
+    private lateinit var mInterstitialAd: InterstitialAd
 
     var hourComponent:Int = 0
     var spinnerArray: ArrayList<String> = ArrayList()
@@ -63,8 +66,8 @@ class Cart : Fragment() {
         store = Gson().fromJson(storeStr, StoreDocument::class.java)
         val formatter = SimpleDateFormat("yyyy-MM-dd 'at' HH:mm", Locale.ENGLISH)
         date = formatter.parse(dateStr)
-        println(dateStr)
 
+        updateCheckoutBtn()
         checkoutBtn.setOnClickListener {
             val stockItems = cartList.filter { it.hasDeliveryTime == false }
             val readyItems = cartList.filter { it.hasDeliveryTime == true }
@@ -76,53 +79,107 @@ class Cart : Fragment() {
                 address = userGlobal?.address!!
             }
 
-            if (stockItems.size > 0){
-                val order = Order(
-                    stockItems,
-                    Date(),
-                    false,
-                    date,
-                    userGlobal?.uid,
-                    userGlobal?.name,
-                    address,
-                    userGlobal!!.l,
-                    userGlobal?.phone,
-                    userGlobal?.deviceToken,
-                    store.documentId,
-                    store.store?.name,
-                    store.store?.ownerId,
-                    false,
-                    1,
-                    ""
-                )
-                PurchaseServices.confirmPurchase(order)
+            if (mInterstitialAd.isLoaded){
+                mInterstitialAd.show()
+                if (stockItems.size > 0){
+                    val order = Order(
+                        stockItems,
+                        Date(),
+                        false,
+                        date,
+                        userGlobal?.uid,
+                        userGlobal?.name,
+                        address,
+                        userGlobal!!.l,
+                        userGlobal?.phone,
+                        userGlobal?.deviceToken,
+                        store.documentId,
+                        store.store?.name,
+                        store.store?.ownerId,
+                        false,
+                        1,
+                        ""
+                    )
+                    PurchaseServices.confirmPurchase(order)
+                }
+
+                if (readyItems.size > 0){
+                    val order = Order(
+                        readyItems,
+                        Date(),
+                        true,
+                        date,
+                        userGlobal?.uid,
+                        userGlobal?.name,
+                        address,
+                        userGlobal!!.l,
+                        userGlobal?.phone,
+                        userGlobal?.deviceToken,
+                        store.documentId,
+                        store.store?.name,
+                        store.store?.ownerId,
+                        false,
+                        1,
+                        ""
+                    )
+                    PurchaseServices.confirmPurchase(order)
+                }
+
+                exit()
+            }else{
+                if (stockItems.size > 0){
+                    val order = Order(
+                        stockItems,
+                        Date(),
+                        false,
+                        date,
+                        userGlobal?.uid,
+                        userGlobal?.name,
+                        address,
+                        userGlobal!!.l,
+                        userGlobal?.phone,
+                        userGlobal?.deviceToken,
+                        store.documentId,
+                        store.store?.name,
+                        store.store?.ownerId,
+                        false,
+                        1,
+                        ""
+                    )
+                    PurchaseServices.confirmPurchase(order)
+                }
+
+                if (readyItems.size > 0){
+                    val order = Order(
+                        readyItems,
+                        Date(),
+                        true,
+                        date,
+                        userGlobal?.uid,
+                        userGlobal?.name,
+                        address,
+                        userGlobal!!.l,
+                        userGlobal?.phone,
+                        userGlobal?.deviceToken,
+                        store.documentId,
+                        store.store?.name,
+                        store.store?.ownerId,
+                        false,
+                        1,
+                        ""
+                    )
+                    PurchaseServices.confirmPurchase(order)
+                }
+
+                exit()
             }
 
-            if (readyItems.size > 0){
-                val order = Order(
-                    readyItems,
-                    Date(),
-                    true,
-                    date,
-                    userGlobal?.uid,
-                    userGlobal?.name,
-                    address,
-                    userGlobal!!.l,
-                    userGlobal?.phone,
-                    userGlobal?.deviceToken,
-                    store.documentId,
-                    store.store?.name,
-                    store.store?.ownerId,
-                    false,
-                    1,
-                    ""
-                )
-                PurchaseServices.confirmPurchase(order)
-            }
-
-            exit()
         }
 
+
+        mInterstitialAd = InterstitialAd(context!!.applicationContext)
+        mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
 
         return rootView
     }
@@ -134,7 +191,7 @@ class Cart : Fragment() {
         val layoutManager = LinearLayoutManager(context!!.applicationContext)
         cart_recyclerview.layoutManager = layoutManager
         cart_recyclerview.setHasFixedSize(true)
-//        enableSwipe()
+        enableSwipe()
     }
 
 
@@ -145,88 +202,117 @@ class Cart : Fragment() {
         fragmentManager?.popBackStack()
     }
 
-//    private fun enableSwipe() {
-//        val simpleItemTouchCallback =
-//            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
-//
-//                override fun onMove(
-//                    recyclerView: RecyclerView,
-//                    viewHolder: RecyclerView.ViewHolder,
-//                    target: RecyclerView.ViewHolder
-//                ): Boolean {
-//                    return false
-//                }
-//
-//                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                    val position = viewHolder.adapterPosition
-//
-//
-//                    var removedItem = adapter!!.removeItem(position)
-//                    cartList = cartList?.filter { it != removedItem } as ArrayList<itemPurchasing>
-////                    var itemToDelete = removedItem.content
-////                    var list = realm.where(RealmChecklist::class.java).equalTo("content",itemToDelete).findFirst()
-////                    realm.beginTransaction()
-////                    list?.deleteFromRealm()
-////                    realm.commitTransaction()
-////                    adapter.notifyDataSetChanged()
-//
-//
-//                }
-//
-//                override fun onChildDraw(
-//                    c: Canvas,
-//                    recyclerView: RecyclerView,
-//                    viewHolder: RecyclerView.ViewHolder,
-//                    dX: Float,
-//                    dY: Float,
-//                    actionState: Int,
-//                    isCurrentlyActive: Boolean
-//                ) {
-//
-//                    val icon: Bitmap
-//                    if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-//
-//                        val itemView = viewHolder.itemView
-//                        val height = itemView.bottom.toFloat() - itemView.top.toFloat()
-//                        val width = height / 3
-//
-//                        if (dX > 0) {
-//                            p.color = Color.parseColor("#388E3C")
-//                            val background =
-//                                RectF(itemView.left.toFloat(), itemView.top.toFloat(), dX, itemView.bottom.toFloat())
-//                            c.drawRect(background, p)
-//                            icon = BitmapFactory.decodeResource(resources, R.drawable.delete)
-//                            val icon_dest = RectF(
-//                                itemView.left.toFloat() + width,
-//                                itemView.top.toFloat() + width,
-//                                itemView.left.toFloat() + 2 * width,
-//                                itemView.bottom.toFloat() - width
-//                            )
-//                            c.drawBitmap(icon, null, icon_dest, p)
-//                        } else {
-//                            p.color = Color.parseColor("#D32F2F")
-//                            val background = RectF(
-//                                itemView.right.toFloat() + dX,
-//                                itemView.top.toFloat(),
-//                                itemView.right.toFloat(),
-//                                itemView.bottom.toFloat()
-//                            )
-//                            c.drawRect(background, p)
-//                            icon = BitmapFactory.decodeResource(resources, R.drawable.delete)
-//                            val icon_dest = RectF(
-//                                itemView.right.toFloat() - 2 * width,
-//                                itemView.top.toFloat() + width,
-//                                itemView.right.toFloat() - width,
-//                                itemView.bottom.toFloat() - width
-//                            )
-//                            c.drawBitmap(icon, null, icon_dest, p)
-//                        }
-//                    }
-//                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-//                }
-//            }
-//        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
-//        itemTouchHelper.attachToRecyclerView(cart_recyclerview)
-//    }
+    private fun updatedCart(){
+        val intent = Intent(context, StoreProduct::class.java)
+        var objStr = Gson().toJson(cartList)
+        intent.putExtra("cartUpdated", objStr)
+        targetFragment?.onActivityResult(3,RESULT_OK, intent)
+//        fragmentManager?.popBackStack()
+    }
+
+    private fun updateCheckoutBtn(){
+        var total = 0.0
+        for (item in cartList){
+            val price = item.itemCount!!.toDouble() * item.productPrice!!
+            total += price
+
+        }
+        checkoutBtn.setText("Confirm - Total RM ${(String.format("%.2f",total))}")
+    }
+
+    private fun enableSwipe() {
+        val simpleItemTouchCallback =
+            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
+
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val position = viewHolder.adapterPosition
+
+
+                    var removedItem = adapter!!.removeItem(position)
+                    cartList = cartList?.filter { it != removedItem } as ArrayList<itemPurchasing>
+//                    var itemToDelete = removedItem.content
+//                    var list = realm.where(RealmChecklist::class.java).equalTo("content",itemToDelete).findFirst()
+//                    realm.beginTransaction()
+//                    list?.deleteFromRealm()
+//                    realm.commitTransaction()
+//                    adapter.notifyDataSetChanged()
+
+
+                }
+
+                override fun onChildDraw(
+                    c: Canvas,
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    dX: Float,
+                    dY: Float,
+                    actionState: Int,
+                    isCurrentlyActive: Boolean
+                ) {
+
+                    val icon: Bitmap
+                    if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+
+                        val itemView = viewHolder.itemView
+                        val height = itemView.bottom.toFloat() - itemView.top.toFloat()
+                        val width = height / 3
+
+                        if (dX > 0) {
+                            p.color = Color.parseColor("#388E3C")
+                            val background =
+                                RectF(itemView.left.toFloat(), itemView.top.toFloat(), dX, itemView.bottom.toFloat())
+                            c.drawRect(background, p)
+                            icon = BitmapFactory.decodeResource(resources, R.drawable.delete)
+                            val icon_dest = RectF(
+                                itemView.left.toFloat() + width,
+                                itemView.top.toFloat() + width,
+                                itemView.left.toFloat() + 2 * width,
+                                itemView.bottom.toFloat() - width
+                            )
+                            c.drawBitmap(icon, null, icon_dest, p)
+                        } else {
+                            p.color = Color.parseColor("#D32F2F")
+                            val background = RectF(
+                                itemView.right.toFloat() + dX,
+                                itemView.top.toFloat(),
+                                itemView.right.toFloat(),
+                                itemView.bottom.toFloat()
+                            )
+                            c.drawRect(background, p)
+                            icon = BitmapFactory.decodeResource(resources, R.drawable.delete)
+                            val icon_dest = RectF(
+                                itemView.right.toFloat() - 2 * width,
+                                itemView.top.toFloat() + width,
+                                itemView.right.toFloat() - width,
+                                itemView.bottom.toFloat() - width
+                            )
+                            c.drawBitmap(icon, null, icon_dest, p)
+                        }
+                    }
+                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                }
+            }
+        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(cart_recyclerview)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        println("NONDIDI")
+        updatedCart()
+//        val sharedPreference =  this.getActivity()?.getSharedPreferences("pref", Context.MODE_PRIVATE);
+//        var editor = sharedPreference?.edit()
+//        editor?.putString("username","Anupam")
+//        editor?.putLong("l",100L)
+//        editor?.commit()
+    }
 
 }

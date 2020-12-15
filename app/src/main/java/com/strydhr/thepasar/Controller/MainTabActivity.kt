@@ -68,6 +68,7 @@ class MainTabActivity : AppCompatActivity() {
             println("halo")
             //additional code
         } else {
+            println("where are we")
             supportFragmentManager.popBackStack()
         }
     }
