@@ -9,6 +9,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import com.strydhr.thepasar.Model.User
 import com.strydhr.thepasar.Utilities.db
+import com.strydhr.thepasar.Utilities.userGlobal
 import java.lang.Exception
 
 object AuthServices {
@@ -54,6 +55,22 @@ object AuthServices {
                 Log.w(Constraints.TAG, "Error getting documents.", exception)
 
             }
+    }
+
+    fun updateUserAddress(address:String,coor:ArrayList<Double>,geoHash:String,complete: (Boolean) -> Unit){
+        var docRef =  db.collection("User").document(userGlobal?.uid!!).update(
+            "address",address,"l",coor,"g",geoHash)
+        docRef.addOnSuccessListener {
+            complete(true)
+        }
+    }
+
+    fun updateUserPhone(phone:String,complete: (Boolean) -> Unit){
+        var docRef =  db.collection("User").document(userGlobal?.uid!!).update(
+            "phone",phone)
+        docRef.addOnSuccessListener {
+            complete(true)
+        }
     }
 
 

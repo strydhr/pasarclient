@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp"
+    android:background="#CAD5D6">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_centerInParent="true">
+
+
+
+
+        <TextView
+            android:id="@+id/edit_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="Edit Delivery Address"
+            android:textSize="20dp"/>
+
+        <EditText
+            android:id="@+id/edit_address_tf"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/edit_address"
+            android:hint="Address"
+            android:maxLines="1"
+            android:layout_marginTop="40dp"/>
+
+        <EditText
+            android:id="@+id/edit_unitnumber_tf"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/edit_address_tf"
+            android:hint="@string/unithint"
+            android:layout_marginTop="10dp"/>
+        <Button
+            android:id="@+id/edit_confirmBtn"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/edit_unitnumber_tf"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="Confirm"
+            android:textColor="@color/white"
+            android:background="@color/blueBtn"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

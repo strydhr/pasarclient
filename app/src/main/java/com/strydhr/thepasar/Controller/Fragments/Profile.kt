@@ -19,6 +19,8 @@ import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.firebase.auth.FirebaseAuth
 import com.strydhr.thepasar.Adapters.ProfileAdapter
+import com.strydhr.thepasar.Controller.Fragments.View.PopupEditAddress
+import com.strydhr.thepasar.Controller.Fragments.View.PopupEditPhone
 import com.strydhr.thepasar.Controller.LoginActivity
 
 import com.strydhr.thepasar.R
@@ -81,17 +83,11 @@ class Profile : Fragment() {
 
 
             }else if(it == "EDITADDRESS"){
-                val AUTOCOMPLETE_REQUEST_CODE = 1
-
-                // Set the fields to specify which types of place data to
-                // return after the user has made a selection.
-                val fields = listOf(Place.Field.ID, Place.Field.NAME)
-
-                // Start the autocomplete intent.
-                val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-                    .setCountry("MY")
-                    .build(context!!.applicationContext)
-                startActivityForResult(intent, 1)
+                var radiusPopup = Intent(context!!.applicationContext,PopupEditAddress::class.java)
+                startActivityForResult(radiusPopup,1)
+            }else if (it == "EDITPHONE"){
+                var radiusPopup = Intent(context!!.applicationContext,PopupEditPhone::class.java)
+                startActivityForResult(radiusPopup,2)
             }
         }
         profile_recyclerview.adapter = adapter
@@ -105,26 +101,14 @@ class Profile : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1) {
-            when (resultCode) {
-                Activity.RESULT_OK -> {
-                    data?.let {
-                        val place = Autocomplete.getPlaceFromIntent(data)
-                        Log.i(TAG, "Place: ${place.name}, ${place.id}")
-                    }
-                }
-                AutocompleteActivity.RESULT_ERROR -> {
-                    // TODO: Handle the error.
-                    data?.let {
-                        val status = Autocomplete.getStatusFromIntent(data)
-                        Log.i(TAG, status.statusMessage)
-                    }
-                }
-                Activity.RESULT_CANCELED -> {
-                    // The user canceled the operation.
-                }
+            if (resultCode == Activity.RESULT_OK){
+                adapter.notifyDataSetChanged()
             }
-            return
+        }else if (requestCode == 2){
+            if (resultCode == Activity.RESULT_OK){
+                adapter.notifyDataSetChanged()
+            }
         }
-        super.onActivityResult(requestCode, resultCode, data)
+
     }
 }

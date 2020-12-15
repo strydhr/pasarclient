@@ -82,7 +82,7 @@ class ProfileAdapter(val profile: User, val itemClick:(String)->Unit): RecyclerV
             THIRD_ITEM ->{
                 holder.bindmobile(profile)
                 holder.icon.setOnClickListener {
-                    itemClick("EDIT")
+                    itemClick("EDITPHONE")
                 }
             }
             FOURTH_ITEM ->{

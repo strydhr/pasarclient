@@ -11,4 +11,6 @@
         <item>15 km</item>
         <item>30 Km</item>
     </string-array>
+
+    <string name="unithint"><font size="16">Unit Number(for Apartments)</font></string>
 </resources>
