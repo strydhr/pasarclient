@@ -41,6 +41,7 @@ class PopupLodgeComplaint: AppCompatActivity() {
                         applicationContext,
                         "Complaint lodged, the owner will get back to you the soonest", Toast.LENGTH_SHORT
                     )
+
                     toast.show()
                     finish()
                 }

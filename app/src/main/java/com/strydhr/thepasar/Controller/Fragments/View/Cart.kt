@@ -22,6 +22,7 @@ import com.strydhr.thepasar.Model.Order
 import com.strydhr.thepasar.Model.StoreDocument
 import com.strydhr.thepasar.Model.itemPurchasing
 import com.strydhr.thepasar.R
+import com.strydhr.thepasar.Services.NotificationServices
 import com.strydhr.thepasar.Services.PurchaseServices
 import com.strydhr.thepasar.Utilities.userGlobal
 import kotlinx.android.synthetic.main.fragment_cart.*
@@ -47,6 +48,8 @@ class Cart : Fragment() {
 
     var hourComponent:Int = 0
     var spinnerArray: ArrayList<String> = ArrayList()
+
+    var totalOders = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,6 +81,15 @@ class Cart : Fragment() {
             }else{
                 address = userGlobal?.address!!
             }
+
+            for (item in cartList){
+                val total = item.itemCount
+                totalOders += total!!
+            }
+            println(store.store?.deviceToken)
+            NotificationServices.sendNotification(context!!.applicationContext,
+                store.store?.deviceToken!!,"New Meal order","Ordered $totalOders items")
+
 
             if (mInterstitialAd.isLoaded){
                 mInterstitialAd.show()
