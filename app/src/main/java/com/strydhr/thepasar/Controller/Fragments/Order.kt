@@ -45,6 +45,7 @@ class Order : Fragment() {
 
         listener = OrderServices.realtimeListUpdate(){
             orderList = it
+            if (orderList.size > 0){
             listener2 = OrderServices.realtimeListUpdate2 { receiptist ->
                 receiptList = receiptist
                 println(it.size)
@@ -89,7 +90,7 @@ class Order : Fragment() {
                 val layoutManager = LinearLayoutManager(context!!.applicationContext)
                 order_recyclerview.layoutManager = layoutManager
                 order_recyclerview.setHasFixedSize(true)
-            }
+            }}
 
         }
 
@@ -99,7 +100,9 @@ class Order : Fragment() {
     override fun onStop() {
         super.onStop()
         listener.remove()
-        listener2.remove()
+        if (orderList.size > 0) {
+            listener2.remove()
+        }
     }
 
 }

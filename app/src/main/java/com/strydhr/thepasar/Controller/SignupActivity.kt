@@ -1,6 +1,7 @@
 package com.strydhr.thepasar.Controller
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -15,6 +16,19 @@ class SignupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
+    }
+
+    fun termnBtnPressed(view: View){
+        val url = "https://www.google.com"
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(url)
+        startActivity(i)
+    }
+    fun policyBtnPressed(view: View){
+        val url = "https://www.google.com"
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(url)
+        startActivity(i)
     }
 
     fun proceedBtnPressed(view: View){

@@ -99,8 +99,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun resetBtnClicked(view: View){
-//        val resetPasswordIntent = Intent(this, ResetPasswordActivity::class.java)
-//        startActivity(resetPasswordIntent)
+        val resetPasswordIntent = Intent(this, ResetPasswordActivity::class.java)
+        startActivity(resetPasswordIntent)
     }
 
     fun enableProgressBar(enable: Boolean){

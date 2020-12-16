@@ -50,6 +50,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/round_edittext"
                 android:hint="Your Full Name"
+                android:layout_centerHorizontal="true"
                 android:inputType="textCapSentences"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
@@ -60,6 +61,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/round_edittext"
                 android:hint="Your Email"
+                android:layout_centerHorizontal="true"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:gravity="center"
@@ -74,6 +76,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/round_edittext"
                 android:gravity="center"
+                android:layout_centerHorizontal="true"
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:textColor="@color/white"
@@ -87,12 +90,14 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/round_edittext"
                 android:gravity="center"
+                android:layout_centerHorizontal="true"
                 android:hint="Confirm Password"
                 android:inputType="textPassword"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white" />
 
             <ImageButton
+                android:id="@+id/signup_confirmbtn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_below="@id/signup_confirmpassword_tf"
@@ -102,6 +107,29 @@
                 android:onClick="proceedBtnPressed"
                 android:scaleType="fitXY"
                 android:src="@drawable/proceed_btn" />
+            <LinearLayout
+                android:layout_below="@id/signup_confirmbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="termnBtnPressed"
+                    android:text="Term of service"
+                    android:textSize="11dp" />
+
+                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="policyBtnPressed"
+                    android:text="and Privacy Policy"
+                    android:textSize="11dp" />
+
+            </LinearLayout>
 
 
         </RelativeLayout>
