@@ -16,10 +16,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Controller.MainTabActivity"
+        <activity android:name=".Controller.SignupLocationActivity"></activity>
+        <activity android:name=".Controller.SignupActivity" />
+        <activity
+            android:name=".Controller.MainTabActivity"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBar"
-            tools:ignore="LockedOrientationActivity"></activity>
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Controller.LoginActivity"
             android:screenOrientation="portrait"
@@ -32,8 +35,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-<!--        Popups-->
+        <!-- Popups -->
         <activity
             android:name=".Controller.Fragments.View.PopupUpdateRadius"
             android:theme="@style/AppTheme.CustomTheme" />
@@ -52,14 +54,23 @@
         <activity
             android:name=".Controller.Fragments.View.PopupAddProduct"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MainActivity" />
 
-        <activity android:name=".MainActivity">
-        </activity>
-
-        <!--        Admobs-->
+        <!-- Admobs -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-3940256099942544~3347511713" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.strydhr.thepasar.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

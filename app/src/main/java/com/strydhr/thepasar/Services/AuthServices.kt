@@ -28,6 +28,27 @@ object AuthServices {
         }
     }
 
+    fun addUserToDatabase(name:String,phone:String,address:String,unitNumber:String,profileImage:String,coor:ArrayList<Double>,geoHash:String,devicetoken:String,complete: (Boolean) -> Unit){
+        auth = FirebaseAuth.getInstance()
+        val user = User(auth.uid,name,phone,address,unitNumber,coor,geoHash,profileImage,true,true,devicetoken)
+
+        db.collection("User").document(auth.uid.toString()).set(user).addOnCompleteListener {task ->
+            if(task.isSuccessful){
+                complete(true)
+            }
+        }
+    }
+
+    fun resetPassword(email: String,complete:(Boolean) -> Unit){
+        auth = FirebaseAuth.getInstance()
+        auth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+            if (task.isSuccessful){
+                println("reseted")
+                complete(true)
+            }
+        }
+    }
+
     fun getUserDetails(context: Context, userId:String, complete:(Boolean, User)->Unit){
 
         val docRef = db.collection("User").document(userId)

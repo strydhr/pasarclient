@@ -30,6 +30,8 @@ class HomeMain : Fragment() {
 
     lateinit var adapter:StoreAdapter
     var storeList: MutableList<StoreDocument> = ArrayList()
+    lateinit var geopoint: GeoPoint
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,14 +40,15 @@ class HomeMain : Fragment() {
         // Inflate the layout for this fragment
 
         //All asdasd
-        return inflater.inflate(R.layout.fragment_home_main, container, false)
+      val rootView = inflater.inflate(R.layout.fragment_home_main, container, false)
+        geopoint = GeoPoint(userGlobal?.l!![0], userGlobal?.l!![1])
+        return rootView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
-        val geopoint = GeoPoint(userGlobal?.l!![0], userGlobal?.l!![1])
+//        val geopoint = GeoPoint(userGlobal?.l!![0], userGlobal?.l!![1])
         StoreServices.geoSearchStore(geopoint, 30.0){ storelist,query ->
             storeList = storelist
             query.removeAllListeners()

@@ -43,11 +43,20 @@ class LoginActivity : AppCompatActivity() {
         if (auth.currentUser != null){
             println(auth.currentUser!!.uid)
            AuthServices.getUserDetails(this, auth.currentUser!!.uid){ isSuccess,user ->
-               userGlobal = user
-               val intent = Intent(this, MainTabActivity::class.java)
-               startActivity(intent)
-               finish()
+               if (isSuccess){
+                   userGlobal = user
+                   val intent = Intent(this, MainTabActivity::class.java)
+                   startActivity(intent)
+                   finish()
+               }else{
+                   FirebaseAuth.getInstance().signOut()
+                   userGlobal = null
+               }
+
            }
+        }else{
+            FirebaseAuth.getInstance().signOut()
+            userGlobal = null
         }
     }
 
@@ -60,17 +69,15 @@ class LoginActivity : AppCompatActivity() {
                 if(task.isSuccessful) {
                     if (auth.currentUser != null){
                         AuthServices.getUserDetails(this, auth.currentUser!!.uid){ isSuccess,user ->
-                            userGlobal = user
-                            AuthServices.updateDeviceToken()
-                            val intent = Intent(this, MainTabActivity::class.java)
-                            startActivity(intent)
-                            finish()
+                            if (isSuccess) {
+                                userGlobal = user
+                                AuthServices.updateDeviceToken()
+                                val intent = Intent(this, MainTabActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
                         }
                     }
-
-                    val intent = Intent(this, MainTabActivity::class.java)
-                    startActivity(intent)
-                    finish()
 
                 }else {
                     enableProgressBar(false)
@@ -87,8 +94,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun signupBtnClicked(view: View){
-//        val createAccountIntent = Intent(this, SignupActivity::class.java)
-//        startActivity(createAccountIntent)
+        val createAccountIntent = Intent(this, SignupActivity::class.java)
+        startActivity(createAccountIntent)
     }
 
     fun resetBtnClicked(view: View){
