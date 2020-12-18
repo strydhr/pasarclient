@@ -10,4 +10,5 @@
     <color name="lightgrey">#dddddd</color>
     <color name="blueBtn">#0075e3</color>
     <color name="turquoiseBtn">#47b2db</color>
+    <color name="blackOpacity">#80000000</color>
 </resources>
