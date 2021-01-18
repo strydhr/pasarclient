@@ -96,23 +96,19 @@ class StoreProduct : Fragment() {
             adapter = ProductAdapter(context!!.applicationContext, productList){
                 var objStr = Gson().toJson(it)
                 val cartStr = Gson().toJson(cart)
-//                val bundle = Bundle()
-//                bundle.putString("product", objStr)
-//                val fragInfo = AddProduct()
-//                fragInfo.arguments = bundle
-//
-//
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .replace(R.id.fragment_container, fragInfo).addToBackStack(null)
-//                    .commit()
 
-                var addProductPopup = Intent(
-                    context!!.applicationContext,
-                    PopupAddProduct::class.java
-                )
-                addProductPopup.putExtra("product", objStr)
+                if (it.product?.type == "Handmade" && it!!.product?.count == 0){
+
+                }else{
+                    var addProductPopup = Intent(
+                        context!!.applicationContext,
+                        PopupAddProduct::class.java
+                    )
+                    addProductPopup.putExtra("product", objStr)
 //                addProductPopup.putExtra("cart",cartStr)
-                startActivityForResult(addProductPopup, 1)
+                    startActivityForResult(addProductPopup, 1)
+                }
+
 
 
             }

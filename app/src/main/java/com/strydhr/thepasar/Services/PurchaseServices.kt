@@ -38,7 +38,7 @@ object PurchaseServices {
     }
 
     fun lodgeComplaint(receipt:ReceiptDocument,complaint:String,complete: (Boolean)-> Unit){
-        val complaint = Complaint(receipt.receipt?.items, Date(),receipt.receipt?.deliveryTime,receipt.receipt?.purchaserId,receipt.receipt?.purchaserName,receipt.receipt?.purchaserAddress,receipt.receipt?.storeId,receipt.receipt?.storeName,receipt.receipt?.ownerId,receipt.documentId,complaint)
+        val complaint = Complaint(receipt.receipt?.items, Date(),receipt.receipt?.deliveryTime,receipt.receipt?.purchaserId,receipt.receipt?.purchaserName,receipt.receipt?.purchaserAddress,receipt.receipt?.purchaserPhone,receipt.receipt?.storeId,receipt.receipt?.storeName,receipt.receipt?.ownerId,receipt.documentId,complaint,false)
         db.collection("complaints").add(complaint).addOnSuccessListener {
             complete(true)
         }

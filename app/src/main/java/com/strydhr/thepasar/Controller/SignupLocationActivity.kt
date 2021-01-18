@@ -11,6 +11,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.MotionEvent
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.Constraints
@@ -75,25 +77,53 @@ class SignupLocationActivity : AppCompatActivity() {
 
         val placesClient = Places.createClient(this)
 
-        signup_address_tf.setOnClickListener{
+        signup_address_tf.showSoftInputOnFocus = false
+        signup_address_tf.setOnTouchListener(object : View.OnTouchListener {
+            override fun onTouch(p0: View?, ev: MotionEvent?): Boolean {
+                if (ev!!.action == MotionEvent.ACTION_DOWN){
+                    val AUTOCOMPLETE_REQUEST_CODE = 1
 
+                    // Set the fields to specify which types of place data to
+                    // return after the user has made a selection.
+                    val fields = listOf(Place.Field.ID, Place.Field.NAME)
 
-            // Set the fields to specify which types of place data to
-            // return after the user has made a selection.
-            val fields = listOf(Place.Field.ID, Place.Field.NAME)
-
-            // Start the autocomplete intent.
+                    // Start the autocomplete intent.
 //            autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.LAT_LNG));
 
-            val intent = Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.FULLSCREEN, listOf(
-                    Place.Field.ADDRESS_COMPONENTS, Place.Field.NAME,
-                    Place.Field.LAT_LNG,
-                    Place.Field.ADDRESS))
-                .setCountry("MY")
-                .build(applicationContext)
-            startActivityForResult(intent, 2)
-        }
+                    val intent = Autocomplete.IntentBuilder(
+                        AutocompleteActivityMode.FULLSCREEN, listOf(
+                            Place.Field.ADDRESS_COMPONENTS, Place.Field.NAME,
+                            Place.Field.LAT_LNG,
+                            Place.Field.ADDRESS))
+                        .setCountry("MY")
+                        .build(applicationContext)
+                    startActivityForResult(intent, 2)
+                }else if (ev!!.action == MotionEvent.ACTION_UP){
+                    println("duhduh")
+                }
+
+                return true
+            }
+        })
+//        signup_address_tf.setOnClickListener{
+//
+//
+//            // Set the fields to specify which types of place data to
+//            // return after the user has made a selection.
+//            val fields = listOf(Place.Field.ID, Place.Field.NAME)
+//
+//            // Start the autocomplete intent.
+////            autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.LAT_LNG));
+//
+//            val intent = Autocomplete.IntentBuilder(
+//                AutocompleteActivityMode.FULLSCREEN, listOf(
+//                    Place.Field.ADDRESS_COMPONENTS, Place.Field.NAME,
+//                    Place.Field.LAT_LNG,
+//                    Place.Field.ADDRESS))
+//                .setCountry("MY")
+//                .build(applicationContext)
+//            startActivityForResult(intent, 2)
+//        }
 
         signup_profileimage.setOnClickListener {
             selectImage()

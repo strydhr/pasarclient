@@ -70,10 +70,13 @@
         <activity
             android:name=".Controller.Fragments.View.PopupAddProduct"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MainActivity" /> <!-- Admobs -->
+        <activity android:name=".MainActivity" />
+
+        <!-- Admobs -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-1330351136644118~6885088927" /> <!-- Save image to device folder -->
+            android:value="ca-app-pub-1330351136644118~6885088927" />
+        <!-- Save image to device folder -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.strydhr.thepasar.android.fileprovider"
@@ -83,7 +86,8 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-        </provider> <!-- For notification -->
+        </provider>
+        <!-- For notification -->
         <service
             android:name=".Services.FirebaseMsgServices"
             android:permission="com.google.android.c2dm.permission.SEND">

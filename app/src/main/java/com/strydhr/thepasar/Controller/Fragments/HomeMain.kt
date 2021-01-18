@@ -72,17 +72,47 @@ class HomeMain : Fragment() {
             val height = displayMetrics.heightPixels
             val width = displayMetrics.widthPixels
 
-            println(height)
-        var secondHintHeight = 0f
-        var rowHeight = 0f
-        if (height > 2300){
-            rowHeight = 400f
-            secondHintHeight = 450f
+            println(height) //initialize hint position for multiple phone
+            var secondHintHeight = 0f
+            var rowHeight = 0f
+            var textHeight = 0
 
-        }else if(height > 2000){
-            rowHeight =  300f
-            secondHintHeight = 350f
-        }
+            var circle = 0f
+            var circleX = 0f
+            var circleY = 0f
+            if (height > 2300){
+                rowHeight = 400f
+                secondHintHeight = 450f
+
+                circle = 100f
+                circleX = width.toFloat() - 70f
+                circleY = 200f
+                textHeight = 700
+            }else if(height > 2000){
+                rowHeight =  300f
+                secondHintHeight = 350f
+
+                circle = 80f
+                circleX = width.toFloat() - 60f
+                circleY = 160f
+                textHeight = 700
+            }else if (height > 1100){
+                rowHeight =  200f
+                secondHintHeight = 260f
+
+                circle = 50f
+                circleX = width.toFloat() - 40f
+                circleY = 100f
+                textHeight = 400
+            }else if (height > 700){
+                rowHeight =  90f
+                secondHintHeight = 130f
+
+                circle = 30f
+                circleX = width.toFloat() - 30f
+                circleY = 50f
+                textHeight = 200
+            }
 
             val targets = ArrayList<Target>()
 
@@ -90,8 +120,8 @@ class HomeMain : Fragment() {
             val firstRoot = FrameLayout(activity!!)
             val first = layoutInflater.inflate(R.layout.layout_hints, firstRoot)
             val firstTarget = com.takusemba.spotlight.Target.Builder()
-                .setAnchor(width.toFloat() - 70f, 200f)
-                .setShape(Circle(100f))
+                .setAnchor(circleX, circleY)
+                .setShape(Circle(circle))
                 .setOverlay(first)
                 .setOnTargetListener(object : OnTargetListener {
                     override fun onStarted() {
@@ -104,7 +134,7 @@ class HomeMain : Fragment() {
                     }
                 })
                 .build()
-            4
+
             targets.add(firstTarget)
 
             val secondTarget = com.takusemba.spotlight.Target.Builder()
@@ -116,7 +146,7 @@ class HomeMain : Fragment() {
                         val text = first?.findViewById<TextView>(R.id.custom_text)
                         val params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
 
-                        params.setMargins(10, 700, 10, 10)
+                        params.setMargins(10, textHeight, 10, 10)
                         text?.layoutParams = params
                         text!!.setText("Choose the store to browse view their products")
                     }
@@ -166,21 +196,25 @@ class HomeMain : Fragment() {
 
         StoreServices.geoSearchStore(geopoint, 30.0){ storelist, query ->
             storeList = storelist
+            storeList.sortBy { it.store?.isClosed }
             query.removeAllListeners()
             adapter = StoreAdapter(context!!.applicationContext, storeList){
 
                 var objStr = Gson().toJson(it)
                 println(objStr)
 
-                val bundle = Bundle()
-                bundle.putString("store", objStr)
-                val fragInfo = StoreProduct()
-                fragInfo.arguments = bundle
+                if (!it.store?.isClosed!!){
+                    val bundle = Bundle()
+                    bundle.putString("store", objStr)
+                    val fragInfo = StoreProduct()
+                    fragInfo.arguments = bundle
 
 
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, fragInfo).addToBackStack(null)
-                    .commit()
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, fragInfo).addToBackStack(null)
+                        .commit()
+                }
+
 
             }
             viewstore_recyclerview.adapter = adapter

@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -13,12 +15,20 @@ import com.google.gson.Gson
 import com.strydhr.thepasar.Model.ProductDocument
 import com.strydhr.thepasar.Model.itemPurchasing
 import com.strydhr.thepasar.R
+import com.takusemba.spotlight.OnSpotlightListener
+import com.takusemba.spotlight.OnTargetListener
+import com.takusemba.spotlight.Spotlight
+import com.takusemba.spotlight.Target
+import com.takusemba.spotlight.shape.Circle
+import com.takusemba.spotlight.shape.RoundedRectangle
 import kotlinx.android.synthetic.main.popup_addproduct.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class PopupAddProduct: AppCompatActivity()  {
+
+    var hintCount = 0
 
     lateinit var productDoc: ProductDocument
     var cart:ArrayList<itemPurchasing> = ArrayList()
@@ -43,6 +53,136 @@ class PopupAddProduct: AppCompatActivity()  {
         setContentView(R.layout.popup_addproduct)
         var productStr = intent.getStringExtra("product")
         productDoc = Gson().fromJson<ProductDocument>(productStr,ProductDocument::class.java)
+
+        //Hint
+        if (!restorePrefData()){
+            if (productDoc.product?.type != "Homemade"){
+                val displayMetrics = DisplayMetrics()
+                this?.getWindowManager()?.getDefaultDisplay()!!.getMetrics(displayMetrics)
+                val height = displayMetrics.heightPixels
+                val width = displayMetrics.widthPixels
+
+                println(height)
+                var firstHintHeight = 0f
+                var firstrowHeight = 0f
+                var secondrowHeight = 0f
+                var secondHintHeight = 0f
+                var textHeight1 = 0
+                var textHeight2 = 0
+                if (height > 2300){
+                    firstrowHeight = 600f
+                    firstHintHeight = 1550f
+                    secondrowHeight = 170f
+                    secondHintHeight = 1920f
+                    textHeight1 = 700
+                    textHeight2 = 1100
+
+                }else if(height > 2000){
+                    firstrowHeight =  400f
+                    firstHintHeight = 1150f
+                    secondrowHeight = 110f
+                    secondHintHeight = 1420f
+                    textHeight1 = 700
+                    textHeight2 = 1100
+
+                }else if (height > 1100){
+                    firstrowHeight =  320f
+                    firstHintHeight = 910f
+                    secondrowHeight = 100f
+                    secondHintHeight = 1090f
+                    textHeight1 = 500
+                    textHeight2 = 800
+                }else if (height > 700){
+                    firstrowHeight =  160f
+                    firstHintHeight = 450f
+                    secondrowHeight = 60f
+                    secondHintHeight = 560f
+                    textHeight1 = 300
+                    textHeight2 = 600
+                }
+
+
+                val targets = ArrayList<Target>()
+
+                // first target
+                val firstRoot = FrameLayout(this!!)
+                val first = layoutInflater.inflate(R.layout.layout_hints, firstRoot)
+                val firstTarget = com.takusemba.spotlight.Target.Builder()
+                    .setAnchor(width.toFloat() / 2, firstHintHeight)
+                    .setShape(RoundedRectangle(firstrowHeight, width.toFloat(), 5f))
+                    .setOverlay(first)
+                    .setOnTargetListener(object : OnTargetListener {
+                        override fun onStarted() {
+                            val text = first?.findViewById<TextView>(R.id.custom_text)
+                            val params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
+
+                            params.setMargins(10, textHeight1, 10, 10)
+                            text?.layoutParams = params
+                            text!!.setText("Choose when you want you meals ready")
+                        }
+
+                        override fun onEnded() {
+
+                        }
+                    })
+                    .build()
+
+                targets.add(firstTarget)
+                val secondTarget = com.takusemba.spotlight.Target.Builder()
+                    .setAnchor(width.toFloat() / 2, secondHintHeight)
+                    .setShape(RoundedRectangle(secondrowHeight, width.toFloat(), 5f))
+                    .setOverlay(first)
+                    .setOnTargetListener(object : OnTargetListener {
+                        override fun onStarted() {
+                            val text = first?.findViewById<TextView>(R.id.custom_text)
+                            val params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
+
+                            params.setMargins(10, textHeight2, 10, 10)
+                            text?.layoutParams = params
+                            text!!.setText("Choose exact time on when should we deliver your meals and then tap the add to cart button below")
+                        }
+
+                        override fun onEnded() {
+
+                        }
+                    })
+                    .build()
+
+                targets.add(secondTarget)
+
+                val spotlight = Spotlight.Builder(this!!)
+                    .setTargets(targets)
+                    .setBackgroundColorRes(R.color.blackOpacity)
+                    .setDuration(1000L)
+                    .setAnimation(DecelerateInterpolator(2f))
+                    .setOnSpotlightListener(object : OnSpotlightListener {
+                        override fun onStarted() {
+
+                        }
+
+                        override fun onEnded() {
+
+
+                        }
+                    })
+                    .build()
+
+                spotlight.start()
+                first.setOnClickListener {
+                    hintCount += 1
+                    println(hintCount)
+                    if (hintCount == 2){
+                        println(hintCount)
+                        savePrefsData()
+                        spotlight.finish()
+                    }else{
+                        spotlight.next()
+                    }
+
+                }
+            }
+        }
+        //End of hints
 
 //        val cartStr = intent.getStringExtra("cart")
 //        cart = Gson().fromJson<ArrayList<itemPurchasing>>(cartStr,ArrayList<itemPurchasing>::class.java)
@@ -283,6 +423,26 @@ class PopupAddProduct: AppCompatActivity()  {
 
         return dateStr
 
+    }
+
+    // Initials hints
+    private fun savePrefsData() {
+        val pref = this.getSharedPreferences(
+            "MyPreferences",
+            AppCompatActivity.MODE_PRIVATE
+        )
+        val editor = pref.edit()
+        editor.putBoolean("seenAddProductHint", true)
+        editor.commit()
+    }
+
+
+    private fun restorePrefData(): Boolean {
+        val pref = this.getSharedPreferences(
+            "MyPreferences",
+            AppCompatActivity.MODE_PRIVATE
+        )
+        return pref.getBoolean("seenAddProductHint", false)
     }
 
 }

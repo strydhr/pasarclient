@@ -98,11 +98,13 @@ data class Complaint(
     var purchaserId:String? = null,
     var purchaserName:String? = null,
     var purchaserAddress:String? = null,
+    var purchaserPhone:String? = null,
     var storeId:String? = null,
     var storeName:String? = null,
     var ownerId:String? = null,
     var receiptId:String? = null,
-    var complaint:String? = null
+    var complaint:String? = null,
+    @field:JvmField var isResolved:Boolean? = null
 
 
 )

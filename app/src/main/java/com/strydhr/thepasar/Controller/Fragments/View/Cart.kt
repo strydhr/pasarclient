@@ -159,6 +159,7 @@ class Cart : Fragment() {
                         ""
                     )
                     PurchaseServices.confirmPurchase(order)
+
                 }
 
                 if (readyItems.size > 0){
@@ -190,7 +191,7 @@ class Cart : Fragment() {
 
 
         mInterstitialAd = InterstitialAd(context!!.applicationContext)
-//        mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"   Testadid
+//        mInterstitialAd.adUnitId = "ca-app-pub-3940256099942544/1033173712"   //Testadid
         mInterstitialAd.adUnitId = "ca-app-pub-1330351136644118/3147641003"
         mInterstitialAd.loadAd(AdRequest.Builder().build())
 

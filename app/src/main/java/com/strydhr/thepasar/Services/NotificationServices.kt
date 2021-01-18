@@ -27,8 +27,10 @@ object NotificationServices {
         try {
             notifcationBody.put("title", title)
             notifcationBody.put("message", body)
+            notifcationBody.put("sound","default")
             notification.put("to", deviceToken)
             notification.put("notification", notifcationBody)
+
         } catch (e: JSONException) {
             Log.e(ContentValues.TAG, "onCreate: " + e.message)
         }

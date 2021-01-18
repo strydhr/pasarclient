@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -27,12 +28,19 @@ class ProductAdapter(
         private val productName: TextView
         private val productType: TextView
         private val productPrice: TextView
+        private val productStatus: RelativeLayout
 
         fun bind(item: ProductDocument){
             Glide.with(itemView.context).load(item.product?.profileImage).into(productImage)
             productName.text = item.product?.name
             productType.text = item.product?.type
             productPrice.text = "RM ${(String.format("%.2f",item.product?.price))}"
+
+            if (item.product?.type == "Handmade"){
+                if (item!!.product?.count == 0){
+                    productStatus.visibility = View.VISIBLE
+                }
+            }
 
         }
 
@@ -41,6 +49,7 @@ class ProductAdapter(
             productName = itemView.findViewById(R.id.product_label)
             productPrice = itemView.findViewById(R.id.product_price)
             productType = itemView.findViewById(R.id.product_type)
+            productStatus = itemView.findViewById(R.id.product_status)
         }
 
     }

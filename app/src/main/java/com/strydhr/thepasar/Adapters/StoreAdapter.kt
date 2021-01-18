@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -23,12 +24,18 @@ class StoreAdapter(
         private val storeName: TextView
         private val storeType: TextView
         private val storeAddress: TextView
+        private val storeStatus: RelativeLayout
 
         fun bind(item: StoreDocument){
             Glide.with(itemView.context).load(item.store?.profileImage).into(storeImage)
             storeName.text = item.store?.name
             storeType.text = item.store?.type
             storeAddress.text = item.store?.location
+            if (item.store?.isClosed!!){
+                storeStatus.visibility = View.VISIBLE
+            }else{
+                storeStatus.visibility = View.INVISIBLE
+            }
         }
 
         init {
@@ -36,6 +43,7 @@ class StoreAdapter(
             storeName = itemView.findViewById(R.id.store_label)
             storeAddress = itemView.findViewById(R.id.store_address)
             storeType = itemView.findViewById(R.id.store_type)
+            storeStatus = itemView.findViewById(R.id.store_status)
         }
 
     }

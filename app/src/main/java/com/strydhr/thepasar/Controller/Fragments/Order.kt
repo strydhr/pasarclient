@@ -6,6 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.ListenerRegistration
@@ -17,6 +23,11 @@ import com.strydhr.thepasar.Model.ReceiptDocument
 
 import com.strydhr.thepasar.R
 import com.strydhr.thepasar.Services.OrderServices
+import com.takusemba.spotlight.OnSpotlightListener
+import com.takusemba.spotlight.OnTargetListener
+import com.takusemba.spotlight.Spotlight
+import com.takusemba.spotlight.Target
+import com.takusemba.spotlight.shape.RoundedRectangle
 import kotlinx.android.synthetic.main.fragment_order.*
 
 /**
@@ -42,6 +53,55 @@ class Order : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        //For initial hints
+        if (!restorePrefData()){
+            val targets = ArrayList<Target>()
+
+            // first target
+            val firstRoot = FrameLayout(activity!!)
+            val first = layoutInflater.inflate(R.layout.layout_order_hints, firstRoot)
+            val firstTarget = com.takusemba.spotlight.Target.Builder()
+                .setOverlay(first)
+                .setOnTargetListener(object : OnTargetListener {
+                    override fun onStarted() {
+                    }
+
+                    override fun onEnded() {
+
+                    }
+                })
+                .build()
+
+            targets.add(firstTarget)
+
+            val spotlight = Spotlight.Builder(activity!!)
+                .setTargets(targets)
+                .setBackgroundColorRes(R.color.blackOpacity)
+                .setDuration(1000L)
+                .setAnimation(DecelerateInterpolator(2f))
+                .setOnSpotlightListener(object : OnSpotlightListener {
+                    override fun onStarted() {
+
+                    }
+
+                    override fun onEnded() {
+
+
+                    }
+                })
+                .build()
+
+            spotlight.start()
+            first.setOnClickListener {
+                spotlight.finish()
+                savePrefsData()
+
+            }
+        }
+
+
+        // End of hints
+
 
         listener = OrderServices.realtimeListUpdate(){
             orderList = it
@@ -63,28 +123,6 @@ class Order : Fragment() {
                     }
 
 
-
-//                var objStr = Gson().toJson(it)
-//                val cartStr = Gson().toJson(cart)
-//                val bundle = Bundle()
-//                bundle.putString("product", objStr)
-//                val fragInfo = AddProduct()
-//                fragInfo.arguments = bundle
-//
-//
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .replace(R.id.fragment_container, fragInfo).addToBackStack(null)
-//                    .commit()
-
-//                var addProductPopup = Intent(
-//                    context!!.applicationContext,
-//                    PopupAddProduct::class.java
-//                )
-//                addProductPopup.putExtra("product", objStr)
-////                addProductPopup.putExtra("cart",cartStr)
-//                startActivityForResult(addProductPopup, 1)
-
-
                 }
                 order_recyclerview.adapter = adapter
                 val layoutManager = LinearLayoutManager(context!!.applicationContext)
@@ -103,6 +141,26 @@ class Order : Fragment() {
         if (orderList.size > 0) {
             listener2.remove()
         }
+    }
+
+    // Initials hints
+    private fun savePrefsData() {
+        val pref = context!!.applicationContext.getSharedPreferences(
+            "MyPreferences",
+            AppCompatActivity.MODE_PRIVATE
+        )
+        val editor = pref.edit()
+        editor.putBoolean("seenOrderHint", true)
+        editor.commit()
+    }
+
+
+    private fun restorePrefData(): Boolean {
+        val pref = context!!.applicationContext.getSharedPreferences(
+            "MyPreferences",
+            AppCompatActivity.MODE_PRIVATE
+        )
+        return pref.getBoolean("seenOrderHint", false)
     }
 
 }

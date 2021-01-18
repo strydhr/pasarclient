@@ -19,13 +19,13 @@ class SignupActivity : AppCompatActivity() {
     }
 
     fun termnBtnPressed(view: View){
-        val url = "https://www.google.com"
+        val url = "https://satyia.wixsite.com/thepasar/blank-page"
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(url)
         startActivity(i)
     }
     fun policyBtnPressed(view: View){
-        val url = "https://www.google.com"
+        val url = "https://satyia.wixsite.com/thepasar/blank-page"
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(url)
         startActivity(i)
